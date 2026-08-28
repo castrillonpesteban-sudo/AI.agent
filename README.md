@@ -18,14 +18,32 @@ salud.
 Va acompañado del skill `auditoria-habilitacion`, que carga el método, las referencias y las
 plantillas.
 
+### Dos modos
+
+**Modo A — Auditar.** Autoevaluación, auditoría interna, simulacro, verificación de cierre,
+auditoría a un tercero. Es el verificador más severo que la institución va a ver, para que el
+real no encuentre nada nuevo.
+
+**Modo B — Recibir la visita.** La institución es la visitada. Alistamiento, conducta durante la
+visita y respuesta dentro de término. Modo por defecto cuando se dice "nos visitan", "vino la
+secretaría" o "nos dejaron estos hallazgos".
+
+El diagnóstico es igual de severo en los dos — esa es la única forma de que el segundo sirva. Lo
+que cambia es la salida.
+
 ### Qué hace
 
-- Prepara la institución para una visita de verificación (simulacro real, no lectura de carpetas).
+- Prepara la institución para la visita con una cuenta regresiva de D-90 a D-1, roles del día y
+  simulacro conducido como visita real.
+- Monta el expediente maestro para que cualquier evidencia aparezca en menos de dos minutos.
+- Acompaña el día de la visita: reunión de apertura, entrega de evidencia, entrevistas al
+  personal, lectura del acta y constancias antes de firmar.
+- Calcula los términos posteriores y redacta la respuesta: subsanación, solicitud de revisión de
+  diferencias con sustento técnico, plan de mejoramiento.
 - Evalúa cumplimiento por servicio contra los siete estándares.
 - Redacta hallazgos con estructura completa: condición, criterio, evidencia, causa, efecto.
-- Arma autoevaluaciones, actas, informes de auditoría y planes de mejoramiento.
 - Resuelve el ciclo REPS: inscripción, novedades, autoevaluación, renovación, cierre temporal,
-  reactivación, inconsistencias.
+  inactivación, reactivación, inconsistencias.
 - Analiza la brecha frente al nuevo régimen durante la transición normativa.
 
 ### Cómo está construido
@@ -33,22 +51,29 @@ plantillas.
 ```
 .claude/
 ├── agents/
-│   └── auditor-habilitacion.md          Postura, reglas y límites del agente
+│   └── auditor-habilitacion.md          Postura, modos, reglas y límites del agente
 └── skills/
     └── auditoria-habilitacion/
-        ├── SKILL.md                     Método y disparadores
+        ├── SKILL.md                     Método, modos y disparadores
         ├── references/
         │   ├── marco-normativo.md               Mapa normativo con estado de verificación
         │   ├── transicion-3100-a-1732.md        Los dos regímenes y cómo auditar en transición
         │   ├── estandares-y-criterios.md        Los siete estándares y qué se pregunta
         │   ├── metodo-auditoria.md              Muestreo, evidencia, hallazgos, cierre
-        │   ├── hallazgos-frecuentes.md          Patrones de incumplimiento y cómo se cierran
-        │   └── dotacion-e-ingenieria-clinica.md Dotación, metrología, tecnovigilancia
+        │   ├── hallazgos-frecuentes.md          Patrones de incumplimiento y su causa de fondo
+        │   ├── dotacion-e-ingenieria-clinica.md Dotación, metrología, tecnovigilancia
+        │   ├── ciclo-reps.md                    Inscripción, novedades, cierres, renovación
+        │   ├── preparacion-de-la-visita.md      Cuenta regresiva D-90 a D-1 y roles del día
+        │   ├── expediente-de-habilitacion.md    Evidencia ubicable en dos minutos
+        │   ├── dia-de-la-visita.md              Apertura, acta, constancias, cierre
+        │   └── despues-de-la-visita.md          Términos, subsanación, revisión de diferencias
         └── plantillas/
             ├── lista-chequeo-autoevaluacion.md
             ├── acta-visita-verificacion.md
             ├── informe-auditoria.md
-            └── plan-de-mejoramiento.md
+            ├── plan-de-mejoramiento.md
+            ├── matriz-evidencia.md
+            └── respuesta-a-hallazgos.md
 ```
 
 ## Advertencia sobre la normativa

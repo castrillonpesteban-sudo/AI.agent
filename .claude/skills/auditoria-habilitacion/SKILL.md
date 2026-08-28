@@ -12,9 +12,50 @@ habilitación es el **mínimo obligatorio** para operar: no es acreditación, no
 calidad y no es opcional. Un servicio que no cumple un criterio de habilitación no debería estar
 abierto, y esa es la vara con la que se audita.
 
-Este skill sirve a las dos posiciones: preparar a un prestador para que la visita salga bien, y
-auditar con la severidad con que audita la entidad territorial. Nunca las confundas en el mismo
-documento.
+Este skill sirve a las dos posiciones: **auditar** con la severidad con que audita la entidad
+territorial, y **recibir la visita** como prestador. Nunca las confundas en el mismo documento.
+
+## Los dos modos de trabajo
+
+Identifica el modo antes de responder. Cambia qué archivo cargas y con qué tono escribes.
+
+### Modo A — Auditar
+
+El usuario evalúa: autoevaluación, auditoría interna, simulacro, verificación de cierre, o
+auditoría a un tercero contratado.
+
+Ruta: `metodo-auditoria.md` → `estandares-y-criterios.md` → `hallazgos-frecuentes.md`.
+Salidas: `plantillas/lista-chequeo-autoevaluacion.md`, `plantillas/informe-auditoria.md`,
+`plantillas/plan-de-mejoramiento.md`.
+
+Tono: severo y trazable. No decir "está bien" por cortesía.
+
+### Modo B — Recibir la visita
+
+El usuario **es la institución** que va a ser visitada, está siendo visitada, o acaba de recibir
+hallazgos. Es el modo por defecto cuando dice "nos visitan", "vino la secretaría" o "nos
+dejaron estos hallazgos".
+
+Ruta según el momento:
+
+| Momento | Archivo |
+|---|---|
+| Falta tiempo para la visita | `preparacion-de-la-visita.md` |
+| Organizar la evidencia | `expediente-de-habilitacion.md` |
+| La visita es hoy / mañana | `dia-de-la-visita.md` |
+| Ya salió la comisión | `despues-de-la-visita.md` |
+| Trámite REPS en cualquier momento | `ciclo-reps.md` |
+
+Salidas: `plantillas/matriz-evidencia.md`, `plantillas/acta-visita-verificacion.md`,
+`plantillas/respuesta-a-hallazgos.md`, `plantillas/plan-de-mejoramiento.md`.
+
+Tono: operativo y del lado del prestador. Sigues siendo severo en el diagnóstico — ese es el
+favor que le haces — pero el objetivo es que la institución llegue sin sorpresas y responda con
+evidencia.
+
+**En modo B corre el reloj.** Si el usuario ya recibió hallazgos, lo primero que haces es
+calcular los términos (ver `despues-de-la-visita.md`): son días calendario y son cortos.
+Perderlos convierte un hallazgo discutible en uno firme.
 
 ## Regla que manda sobre este skill
 
@@ -120,23 +161,30 @@ Ordenados por frecuencia con que aparecen en visita real. Desarrollo en
 En `plantillas/`. Úsalas como esqueleto, nunca como relleno automático: cada campo se llena con
 dato real o se deja marcado como pendiente.
 
-| Archivo | Para qué |
-|---|---|
-| `lista-chequeo-autoevaluacion.md` | Autoevaluación por estándar, con columna de evidencia. |
-| `acta-visita-verificacion.md` | Registro de lo observado en visita o simulacro. |
-| `informe-auditoria.md` | Informe con alcance, metodología, hallazgos y conclusión. |
-| `plan-de-mejoramiento.md` | Acción, responsable, fecha, prueba de cierre y seguimiento. |
+| Archivo | Para qué | Modo |
+|---|---|---|
+| `lista-chequeo-autoevaluacion.md` | Autoevaluación por estándar, con columna de evidencia. | A y B |
+| `acta-visita-verificacion.md` | Registro de lo observado en visita o simulacro. | A y B |
+| `informe-auditoria.md` | Informe con alcance, metodología, hallazgos y conclusión. | A |
+| `plan-de-mejoramiento.md` | Acción, responsable, fecha, prueba de cierre y seguimiento. | A y B |
+| `matriz-evidencia.md` | Índice del expediente maestro, tablero de vencimientos, prueba de los dos minutos. | B |
+| `respuesta-a-hallazgos.md` | Constancia en acta, solicitud de revisión de diferencias, reporte de subsanación. | B |
 
 ## Referencias
 
-| Archivo | Contenido |
-|---|---|
-| `references/marco-normativo.md` | Normas del SOGCS y conexas, con estado de verificación. |
-| `references/transicion-3100-a-1732.md` | Los dos regímenes, la transición y cómo auditar en ella. |
-| `references/estandares-y-criterios.md` | Los siete estándares y qué se pregunta en cada uno. |
-| `references/metodo-auditoria.md` | Muestreo, evidencia, calificación, redacción de hallazgos. |
-| `references/hallazgos-frecuentes.md` | Patrones de incumplimiento y cómo se cierran. |
-| `references/dotacion-e-ingenieria-clinica.md` | Dotación, mantenimiento, metrología, tecnovigilancia. |
+| Archivo | Contenido | Modo |
+|---|---|---|
+| `references/marco-normativo.md` | Normas del SOGCS y conexas, con estado de verificación. | A y B |
+| `references/transicion-3100-a-1732.md` | Los dos regímenes, la transición y cómo auditar en ella. | A y B |
+| `references/estandares-y-criterios.md` | Los siete estándares y qué se pregunta en cada uno. | A y B |
+| `references/metodo-auditoria.md` | Muestreo, evidencia, calificación, redacción de hallazgos. | A |
+| `references/hallazgos-frecuentes.md` | Patrones de incumplimiento y su causa de fondo. | A y B |
+| `references/dotacion-e-ingenieria-clinica.md` | Dotación, mantenimiento, metrología, tecnovigilancia. | A y B |
+| `references/preparacion-de-la-visita.md` | Cuenta regresiva D-90 a D-1, roles del día, autoengaños. | B |
+| `references/dia-de-la-visita.md` | Apertura, entrega de evidencia, entrevistas, acta, constancias, cierre. | B |
+| `references/despues-de-la-visita.md` | Subsanación, revisión de diferencias, términos, certificación, medidas sanitarias. | B |
+| `references/expediente-de-habilitacion.md` | Cómo organizar la evidencia para encontrarla en dos minutos. | B |
+| `references/ciclo-reps.md` | Inscripción, autoevaluación, novedades, cierre temporal, reactivación, renovación. | A y B |
 
 ## Cómo escribes
 
