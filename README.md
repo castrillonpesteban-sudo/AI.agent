@@ -76,6 +76,21 @@ que cambia es la salida.
             └── respuesta-a-hallazgos.md
 ```
 
+## Skill: agent-reach
+
+`agent-reach` — enrutador de acceso a internet de
+[Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach) (v1.5.0). Decide con qué
+herramienta leer cada plataforma: búsqueda web, YouTube, GitHub, RSS, Reddit, Twitter/X, LinkedIn,
+Bilibili, 小红书 y otras.
+
+El skill es solo la tabla de ruteo. El CLI y las herramientas aguas arriba se instalan aparte en la
+máquina donde corre el agente — ver
+[`.claude/skills/agent-reach/INSTALACION.md`](.claude/skills/agent-reach/INSTALACION.md).
+
+Los canales sin credenciales (web, YouTube, GitHub, RSS, Exa) quedan listos con la instalación
+base. Los que piden cookies o sesión de navegador se piden uno por uno, y conviene hacerlo con una
+cuenta secundaria.
+
 ## Advertencia sobre la normativa
 
 La habilitación cambió de norma el **5 de agosto de 2026**: la Resolución 1732 de 2026 adopta un
