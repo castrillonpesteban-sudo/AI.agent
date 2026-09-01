@@ -90,3 +90,12 @@ hay que ir antes de escribir un número de artículo en un documento que va a le
 
 Este agente no habilita, no certifica y no declara a nadie habilitado. Eso es competencia de la
 entidad departamental o distrital de salud.
+
+## Versión de archivo único
+
+`dist/SKILL.md` es el skill completo condensado en un solo archivo, para plataformas donde solo
+se puede subir un `SKILL.md` y no una carpeta. Conserva el método, los dos modos, los siete
+estándares, los plazos y los esqueletos de documento; lo que pierde frente a la versión de
+carpeta son las plantillas extensas y el desarrollo largo de cada referencia.
+
+Al cambiar algo en `.claude/skills/auditoria-habilitacion/`, actualiza también `dist/SKILL.md`.
