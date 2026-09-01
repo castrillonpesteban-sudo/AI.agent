@@ -11,6 +11,10 @@ Telegram aparece en la app, y al revés.
 
 Next.js 14 (App Router) + TypeScript + Tailwind.
 
+> **¿Nunca lo has puesto a andar?** Empieza por la
+> [**guía paso a paso para usarlo desde Telegram**](GUIA-TELEGRAM.md): crear el bot, dejarlo
+> corriendo y hablarle desde el celular.
+
 ## Arquitectura
 
 ```
@@ -152,9 +156,20 @@ Con `npm run start` el propio proceso barre los recordatorios cada 30 segundos
 (`INTERVALO_RECORDATORIOS_MS`) y sondea Telegram. Es el modo pensado para un servidor que queda
 prendido: VPS, Railway, Render o Fly.
 
-> El primer barrido (y el sondeo) arrancan con la primera petición al servidor. Si despliegas en
-> una plataforma que duerme el proceso sin tráfico, mantenla despierta con un ping periódico o
-> usa el modo webhook + cron.
+El bot y el planificador arrancan solos al encender el servidor (`src/instrumentation.ts`), sin
+esperar a que nadie abra la app.
+
+### Docker
+
+Hay un `Dockerfile` de tres etapas listo para Fly.io, Render o un VPS:
+
+```bash
+docker build -t asistente .
+docker run -d --env-file .env.local -p 3000:3000 -v asistente-datos:/data asistente
+```
+
+El volumen en `/data` no es opcional: sin él se pierden las tareas en cada redespliegue. En
+Railway o Fly, monta el volumen en esa ruta y define `DATA_DIR=/data`.
 
 En un despliegue **serverless** (Vercel y similares) no hay proceso persistente, así que hay que
 usar `TELEGRAM_MODO=webhook` y llamar al barrido desde un cron:

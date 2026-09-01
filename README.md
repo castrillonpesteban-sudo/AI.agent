@@ -87,8 +87,9 @@ mismas tareas que el bot.
 El núcleo está desacoplado del canal, así que sumar WhatsApp es escribir otro adaptador en
 `src/lib/servidor/canales/`.
 
-Instrucciones de instalación, conexión del bot y despliegue en
-[`asistente-android/README.md`](asistente-android/README.md).
+Para ponerlo a andar desde cero, la
+[**guía paso a paso**](asistente-android/GUIA-TELEGRAM.md). Detalle técnico, despliegue y
+configuración en [`asistente-android/README.md`](asistente-android/README.md).
 
 ## Advertencia sobre la normativa
 

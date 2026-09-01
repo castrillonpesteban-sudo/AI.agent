@@ -66,6 +66,16 @@ const COMANDOS = [
   { command: 'chatid', description: 'Muestra el id de este chat' },
 ];
 
+const AYUDA = [
+  'Utilidades de configuración del bot de Telegram:',
+  '',
+  '  npm run telegram -- info               Datos del bot y del webhook',
+  '  npm run telegram -- comandos           Registra el menú de comandos',
+  '  npm run telegram -- escuchar           Imprime el chat id de quien escriba',
+  '  npm run telegram -- webhook <url>      Registra el webhook',
+  '  npm run telegram -- webhook:borrar     Lo quita (necesario para sondear)',
+].join('\n');
+
 const [accion, argumento] = process.argv.slice(2);
 
 try {
@@ -131,7 +141,7 @@ try {
     }
 
     default:
-      console.log(readFileSync(new URL(import.meta.url)).toString().split('*/')[0].split('/**')[1].trim());
+      console.log(AYUDA);
       process.exit(accion ? 1 : 0);
   }
 } catch (error) {
