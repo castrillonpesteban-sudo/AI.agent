@@ -1,0 +1,23 @@
+# Para dejarlo corriendo en un VPS propio:
+#
+#   docker compose up -d --build
+#   docker compose logs -f
+#
+# Lee las variables de .env.local (el que genera `npm run configurar`).
+
+services:
+  asistente:
+    build: .
+    restart: unless-stopped
+    env_file: .env.local
+    environment:
+      DATA_DIR: /data
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      # Aquí viven el hilo y las tareas. Sin esto se pierden al recrear el contenedor.
+      - datos:/data
+
+volumes:
+  datos:

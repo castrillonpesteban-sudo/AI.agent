@@ -1,5 +1,5 @@
-import { ChatWindow } from '@/components/ChatWindow';
+import { VistaChat } from '@/components/VistaChat';
 
-export default function Home() {
-  return <ChatWindow />;
+export default function PaginaChat() {
+  return <VistaChat />;
 }

@@ -24,3 +24,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Datos locales del asistente (hilo, tareas y suscripciones push)
+data/
