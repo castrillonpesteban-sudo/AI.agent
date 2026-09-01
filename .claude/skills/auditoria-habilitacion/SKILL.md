@@ -174,6 +174,7 @@ dato real o se deja marcado como pendiente.
 
 | Archivo | Contenido | Modo |
 |---|---|---|
+| `references/postura-del-auditor.md` | Reglas, tono y límites del auditor. Léela primero. | A y B |
 | `references/marco-normativo.md` | Normas del SOGCS y conexas, con estado de verificación. | A y B |
 | `references/transicion-3100-a-1732.md` | Los dos regímenes, la transición y cómo auditar en ella. | A y B |
 | `references/estandares-y-criterios.md` | Los siete estándares y qué se pregunta en cada uno. | A y B |
