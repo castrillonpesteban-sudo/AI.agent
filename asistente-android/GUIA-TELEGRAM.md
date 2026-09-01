@@ -19,7 +19,7 @@ segunda cuando ya lo quieras de verdad.
 |---|---|---|---|
 | **A. Tu computador** | Tu PC o portátil | Solo mientras esté prendido y sin suspender | Nada |
 | **B. Un servidor en la nube** | Railway, Render, Fly.io, un VPS | Siempre, 24/7 | Desde gratis / unos pocos USD al mes |
-| **C. Serverless** | Vercel | Siempre, pero necesita dominio y cron | Gratis con límites |
+| **C. Serverless** | Vercel | No sirve sin cambiarle el almacenamiento (ver abajo) | — |
 
 ---
 
@@ -45,39 +45,26 @@ pegues en un chat, ni en una captura, ni lo subas a GitHub.
 
 ### Opción A — En tu computador (para probar hoy mismo)
 
-Necesitas [Node.js 18.18 o superior](https://nodejs.org). Luego, en una terminal:
+Necesitas [Node.js 18.18 o superior](https://nodejs.org). Son tres comandos:
 
 ```bash
 git clone https://github.com/castrillonpesteban-sudo/AI.agent.git
 cd AI.agent/asistente-android
 npm install
-cp .env.example .env.local
+npm run configurar
 ```
 
-Abre `.env.local` con cualquier editor y pon el token:
+El último te va guiando:
 
-```
-TELEGRAM_BOT_TOKEN=8123456789:AAHk3f_LxQpR2vNm4tYw...
-```
+1. Te pide el token y lo valida contra Telegram al instante. Si está mal, te lo dice ahí mismo.
+2. Te dice que le escribas al bot desde el celular y **detecta solo el id de tu chat**.
+3. Te pregunta la zona horaria (por defecto `America/Bogota`) y, opcionalmente, la clave de
+   Anthropic.
+4. Genera las claves de notificación, registra el menú de comandos y escribe `.env.local`.
 
-Ahora averigua **el id de tu chat**, que es como el bot sabe que eres tú:
+No tienes que editar ningún archivo a mano. Cuando termine:
 
 ```bash
-npm run telegram -- escuchar
-```
-
-Deja eso corriendo, abre Telegram, busca tu bot por el usuario que escogiste y mándale
-cualquier cosa (`hola` sirve). En la terminal aparecerá:
-
-```
-chat id: 123456789  ·  @tuusuario  ·  "hola"
-  → agrega esto a .env.local:  TELEGRAM_CHATS_PERMITIDOS=123456789
-```
-
-Corta con `Ctrl+C`, agrega esa línea a `.env.local`, y arranca:
-
-```bash
-npm run telegram -- comandos     # registra el menú de comandos (una sola vez)
 npm run build
 npm run start
 ```
@@ -87,6 +74,9 @@ Ve a Telegram y escríbele.
 
 > Mientras esa terminal esté abierta y el computador prendido, el bot responde. Si cierras la
 > terminal, el bot se calla. Para que no se suspenda el equipo, revisa las opciones de energía.
+
+Puedes volver a correr `npm run configurar` cuando quieras: respeta lo que ya está puesto y solo
+pregunta por lo que falta.
 
 ### Opción B — En la nube, para que funcione siempre
 
@@ -109,24 +99,37 @@ Lo mismo de la opción A, pero el programa corre en un servidor que nunca se apa
 5. **Importante:** en **Settings → Volumes**, crea un volumen montado en `/data`.
    Sin esto **pierdes todas las tareas cada vez que se redespliegue la app.**
 
+El repositorio ya trae `railway.json`, así que Railway sabe cómo construirlo y arrancarlo sin
+que toques nada más.
+
 Si aún no tienes el chat id (porque nunca corriste la opción A): despliega primero solo con el
 token, escríbele cualquier cosa al bot desde Telegram y te contestará que el chat no está
 autorizado **incluyendo tu número**. Agrégalo a las variables y redespliega.
 
-También hay un `Dockerfile` listo, por si prefieres Fly.io, Render o un VPS propio:
+**Otras opciones**, ya configuradas en el repositorio:
 
-```bash
-docker build -t asistente .
-docker run -d --env-file .env.local -p 3000:3000 -v asistente-datos:/data asistente
-```
+| Dónde | Archivo | Cómo |
+|---|---|---|
+| Fly.io | `fly.toml` | `fly launch --no-deploy` → `fly volumes create datos_asistente --size 1` → `fly secrets set ...` → `fly deploy` |
+| Un VPS propio | `docker-compose.yml` | `docker compose up -d --build` (lee tu `.env.local`) |
 
-### Opción C — Vercel (serverless)
+En cualquiera de las tres, **el volumen es obligatorio**. Y ojo con los planes gratuitos que
+apagan el servicio por falta de tráfico: el bot escucha a Telegram desde su propio proceso, así
+que si el servicio se duerme, deja de responder.
 
-Vercel no deja procesos corriendo, así que hay que cambiar dos cosas: el bot pasa a modo
-*webhook* y los recordatorios los dispara un cron. Está explicado en el
-[README](README.md#modo-webhook). Ten en cuenta que el sistema de archivos de Vercel es de solo
-lectura, así que ahí sí toca cambiar el almacenamiento por una base de datos externa. **Es la
-opción más incómoda de las tres**; si puedes, quédate en la B.
+### Opción C — Vercel (serverless) — no recomendada
+
+Vercel **no sirve tal como está el proyecto**, por dos razones de fondo:
+
+- Su sistema de archivos es de solo lectura, así que `data/db.json` no se puede escribir. Habría
+  que cambiar el almacén por una base de datos externa (Vercel KV, Postgres, Turso…), que toca
+  aprovisionar aparte.
+- No mantiene procesos vivos, así que el bot tendría que pasar a modo *webhook* y los
+  recordatorios dependerían de un cron programado — revisa con cuidado cada cuánto puede correr
+  un cron en tu plan, porque de eso depende la precisión de los avisos.
+
+Si aun así quieres intentarlo, el modo webhook está explicado en el
+[README](README.md#modo-webhook). Pero para este asistente, la opción B es mucho mejor.
 
 ---
 

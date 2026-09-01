@@ -69,11 +69,17 @@ reprograman solas al ciclo siguiente. Un recordatorio se avisa una sola vez por 
 
 ```bash
 npm install
-cp .env.example .env.local
+npm run configurar   # guía interactiva: token, chat id, zona horaria y claves
 npm run dev
 ```
 
 Abre `http://localhost:3000`.
+
+`npm run configurar` deja `.env.local` listo sin editar nada a mano: valida el token contra
+Telegram, detecta el id de tu chat esperando que le escribas al bot, genera las claves VAPID y
+registra el menú de comandos. Se puede volver a correr; respeta lo que ya esté puesto.
+
+Si prefieres hacerlo a mano, copia `.env.example` a `.env.local` y llénalo.
 
 Sin `ANTHROPIC_API_KEY` la app funciona igual para crear tareas y listar pendientes: usa el
 intérprete de fechas en español que vive en `src/lib/fechas.ts`. Lo que no hace es conversar.
@@ -81,27 +87,15 @@ intérprete de fechas en español que vive en `src/lib/fechas.ts`. Lo que no hac
 ### Conectar el bot de Telegram
 
 1. En Telegram, háblale a **@BotFather**, manda `/newbot` y sigue los pasos. Te da un token.
-2. Pon el token en `.env.local`:
+2. Corre `npm run configurar` y pégalo cuando lo pida. El resto lo resuelve solo: valida el
+   token, te pide que le escribas al bot para detectar el id de tu chat, y lo autoriza.
 
-   ```
-   TELEGRAM_BOT_TOKEN=123456:AA...
-   ```
+   La lista de chats autorizados **no es opcional**: un bot de Telegram es público, y sin ella
+   no atiende a nadie (a propósito).
 
-3. Averigua el id de tu chat y autorízalo. **Esto no es opcional**: un bot de Telegram es
-   público, y sin lista de autorizados no atiende a nadie (a propósito).
-
-   ```bash
-   npm run telegram -- escuchar     # escríbele algo al bot; imprime tu chat id
-   ```
-
-   ```
-   TELEGRAM_CHATS_PERMITIDOS=123456789
-   ```
-
-4. Registra el menú de comandos y arranca:
+3. Arranca:
 
    ```bash
-   npm run telegram -- comandos
    npm run build && npm run start
    ```
 
@@ -159,17 +153,22 @@ prendido: VPS, Railway, Render o Fly.
 El bot y el planificador arrancan solos al encender el servidor (`src/instrumentation.ts`), sin
 esperar a que nadie abra la app.
 
-### Docker
+### Archivos de despliegue
 
-Hay un `Dockerfile` de tres etapas listo para Fly.io, Render o un VPS:
+| Plataforma | Archivo |
+|---|---|
+| Railway | `railway.json` — construcción y arranque; falta poner el volumen en `/data` desde el panel |
+| Fly.io | `fly.toml` — incluye el volumen y evita que la máquina se duerma |
+| VPS propio | `docker-compose.yml` — lee tu `.env.local` |
+| Cualquiera con Docker | `Dockerfile` de tres etapas, con salida standalone |
 
 ```bash
-docker build -t asistente .
-docker run -d --env-file .env.local -p 3000:3000 -v asistente-datos:/data asistente
+docker compose up -d --build
 ```
 
-El volumen en `/data` no es opcional: sin él se pierden las tareas en cada redespliegue. En
-Railway o Fly, monta el volumen en esa ruta y define `DATA_DIR=/data`.
+El volumen en `/data` no es opcional: sin él se pierden las tareas en cada redespliegue. Ojo
+también con los planes gratuitos que apagan el servicio sin tráfico — el bot escucha a Telegram
+desde su propio proceso, así que si el servicio duerme, deja de responder.
 
 En un despliegue **serverless** (Vercel y similares) no hay proceso persistente, así que hay que
 usar `TELEGRAM_MODO=webhook` y llamar al barrido desde un cron:
@@ -243,7 +242,8 @@ src/
             ├── conversacion.ts     Comandos, botones y turno de conversación
             └── sondeo.ts           Sondeo largo dentro del proceso
 scripts/
-└── telegram.mjs                    Configuración del bot (token, webhook, chat id)
+├── configurar.mjs                  Configuración guiada: deja .env.local listo
+└── telegram.mjs                    Utilidades del bot (info, webhook, comandos)
 public/
 ├── sw.js                           Caché del app shell, push y clic en la notificación
 ├── offline.html

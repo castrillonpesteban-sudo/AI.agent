@@ -11,11 +11,12 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 FROM node:22-alpine AS constructor
+ARG SALIDA_STANDALONE=1
 WORKDIR /app
 COPY --from=dependencias /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV SALIDA_STANDALONE=1
+ENV SALIDA_STANDALONE=$SALIDA_STANDALONE
 RUN npm run build
 
 FROM node:22-alpine AS ejecucion
