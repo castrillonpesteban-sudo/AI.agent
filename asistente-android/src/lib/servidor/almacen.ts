@@ -10,12 +10,23 @@ export interface SuscripcionPush {
 
 export interface BaseDatos extends Estado {
   suscripciones: SuscripcionPush[];
+  /** Estado del canal de Telegram: offset de sondeo y updates ya procesados. */
+  telegram: EstadoTelegram;
+}
+
+export interface EstadoTelegram {
+  /** update_id del último update consumido, para el sondeo largo. */
+  ultimoUpdateId: number | null;
+  /** update_id recientes, para descartar reenvíos del webhook. */
+  updatesVistos: number[];
+  /** Chats a los que se envían los recordatorios. */
+  chats: number[];
 }
 
 const DIRECTORIO = process.env.DATA_DIR ?? path.join(process.cwd(), 'data');
 const ARCHIVO = path.join(DIRECTORIO, 'db.json');
 
-const VACIA: BaseDatos = { mensajes: [], tareas: [], suscripciones: [] };
+const TELEGRAM_VACIO: EstadoTelegram = { ultimoUpdateId: null, updatesVistos: [], chats: [] };
 
 let cache: BaseDatos | null = null;
 /** Cola de escrituras: evita que dos peticiones simultáneas se pisen el archivo. */
@@ -31,9 +42,10 @@ async function cargar(): Promise<BaseDatos> {
       mensajes: datos.mensajes ?? [],
       tareas: datos.tareas ?? [],
       suscripciones: datos.suscripciones ?? [],
+      telegram: { ...TELEGRAM_VACIO, ...(datos.telegram ?? {}) },
     };
   } catch {
-    cache = { ...VACIA };
+    cache = { mensajes: [], tareas: [], suscripciones: [], telegram: { ...TELEGRAM_VACIO } };
   }
 
   return cache;
@@ -53,6 +65,7 @@ export async function leer(): Promise<BaseDatos> {
     mensajes: [...datos.mensajes],
     tareas: [...datos.tareas],
     suscripciones: [...datos.suscripciones],
+    telegram: { ...datos.telegram, chats: [...datos.telegram.chats] },
   };
 }
 
@@ -86,6 +99,7 @@ export function mensajeNuevo(campos: Partial<Mensaje> & Pick<Mensaje, 'rol' | 't
     dudaResueltaEn: campos.dudaResueltaEn ?? null,
     tareasAdjuntas: campos.tareasAdjuntas ?? [],
     esRecordatorio: campos.esRecordatorio ?? false,
+    canal: campos.canal ?? 'app',
   };
 }
 

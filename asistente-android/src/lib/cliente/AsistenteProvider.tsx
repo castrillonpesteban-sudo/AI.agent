@@ -123,6 +123,7 @@ export function AsistenteProvider({ children }: { children: ReactNode }) {
         dudaResueltaEn: null,
         tareasAdjuntas: [],
         esRecordatorio: false,
+        canal: 'app',
       };
       setMensajes((previos) => [...previos, provisional]);
       setEnviando(true);

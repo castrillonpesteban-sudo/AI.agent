@@ -76,14 +76,18 @@ que cambia es la salida.
             └── respuesta-a-hallazgos.md
 ```
 
-## App: asistente personal (PWA de mensajes)
+## App: asistente personal (bot de Telegram + PWA)
 
-`asistente-android/` — aplicación instalable con forma de app de mensajes. Se le escribe como a
-un chat: lo que suene a pendiente queda como tarea con recordatorio, las preguntas que quedan
-abiertas se guardan en Dudas, y los avisos llegan al celular como notificación aunque la app
-esté cerrada.
+`asistente-android/` — asistente personal al que se le escribe desde Telegram, en el celular.
+Lo que suene a pendiente queda como tarea con recordatorio, las preguntas que quedan abiertas se
+guardan como dudas, y a la hora llega el aviso al chat con botones para marcarla hecha o
+aplazarla. Trae además una PWA instalable (Chat, Tareas, Dudas) que comparte el mismo hilo y las
+mismas tareas que el bot.
 
-Instrucciones de instalación, despliegue y configuración en
+El núcleo está desacoplado del canal, así que sumar WhatsApp es escribir otro adaptador en
+`src/lib/servidor/canales/`.
+
+Instrucciones de instalación, conexión del bot y despliegue en
 [`asistente-android/README.md`](asistente-android/README.md).
 
 ## Advertencia sobre la normativa

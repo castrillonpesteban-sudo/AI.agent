@@ -1,13 +1,17 @@
 import { formatearCuando, siguienteOcurrencia } from '@/lib/fechas';
 import { recordatoriosPendientes } from '@/lib/tareas';
-import type { Mensaje } from '@/lib/types';
+import type { Mensaje, Tarea } from '@/lib/types';
 import { mensajeNuevo, mutar } from './almacen';
+import { botonesDeTarea } from './canales/conversacion';
+import { asegurarSondeoTelegram } from './canales/sondeo';
+import { enviarMensaje as enviarTelegram, telegramConfigurado } from './canales/telegram';
 import { enviarAviso } from './push';
 
 export interface ResultadoTick {
   avisadas: number;
   mensajes: Mensaje[];
   enviadosPush: number;
+  enviadosTelegram: number;
 }
 
 /**
@@ -16,10 +20,10 @@ export interface ResultadoTick {
  * vez por vencimiento, y las recurrentes quedan reprogramadas al ciclo siguiente.
  */
 export async function ejecutarTick(ahora: Date = new Date()): Promise<ResultadoTick> {
-  const { mensajes, avisos, suscripciones } = await mutar((datos) => {
+  const { mensajes, avisos, suscripciones, chatsTelegram } = await mutar((datos) => {
     const vencidas = recordatoriosPendientes(datos.tareas, ahora);
     const nuevos: Mensaje[] = [];
-    const textos: Array<{ titulo: string; cuerpo: string; etiqueta: string }> = [];
+    const textos: Array<{ titulo: string; cuerpo: string; etiqueta: string; tarea: Tarea }> = [];
 
     for (const tarea of vencidas) {
       const cuando = tarea.recordarEn as string;
@@ -36,7 +40,9 @@ export async function ejecutarTick(ahora: Date = new Date()): Promise<ResultadoT
       });
       datos.mensajes.push(mensaje);
       nuevos.push(mensaje);
-      textos.push({ titulo: tarea.titulo, cuerpo, etiqueta: tarea.id });
+      // Se copia la tarea antes de reprogramarla, para que los botones apunten
+      // al vencimiento que se está avisando.
+      textos.push({ titulo: tarea.titulo, cuerpo, etiqueta: tarea.id, tarea: { ...tarea } });
 
       tarea.avisadaEn = ahora.toISOString();
 
@@ -48,14 +54,20 @@ export async function ejecutarTick(ahora: Date = new Date()): Promise<ResultadoT
       }
     }
 
-    return { mensajes: nuevos, avisos: textos, suscripciones: [...datos.suscripciones] };
+    return {
+      mensajes: nuevos,
+      avisos: textos,
+      suscripciones: [...datos.suscripciones],
+      chatsTelegram: [...datos.telegram.chats],
+    };
   });
 
   if (avisos.length === 0) {
-    return { avisadas: 0, mensajes: [], enviadosPush: 0 };
+    return { avisadas: 0, mensajes: [], enviadosPush: 0, enviadosTelegram: 0 };
   }
 
   let enviadosPush = 0;
+  let enviadosTelegram = 0;
   const caducados: string[] = [];
 
   for (const aviso of avisos) {
@@ -67,6 +79,21 @@ export async function ejecutarTick(ahora: Date = new Date()): Promise<ResultadoT
     });
     enviadosPush += resultado.enviados;
     caducados.push(...resultado.caducados);
+
+    if (telegramConfigurado()) {
+      for (const chatId of chatsTelegram) {
+        try {
+          await enviarTelegram(
+            chatId,
+            `⏰ ${aviso.titulo}\n${aviso.cuerpo}`,
+            botonesDeTarea(aviso.tarea),
+          );
+          enviadosTelegram += 1;
+        } catch (error) {
+          console.error('No se pudo enviar el recordatorio por Telegram', error);
+        }
+      }
+    }
   }
 
   if (caducados.length > 0) {
@@ -77,7 +104,7 @@ export async function ejecutarTick(ahora: Date = new Date()): Promise<ResultadoT
     });
   }
 
-  return { avisadas: avisos.length, mensajes, enviadosPush };
+  return { avisadas: avisos.length, mensajes, enviadosPush, enviadosTelegram };
 }
 
 const INTERVALO_MS = Number(process.env.INTERVALO_RECORDATORIOS_MS ?? 30_000);
@@ -94,6 +121,9 @@ declare global {
  * externo contra POST /api/recordatorios/tick.
  */
 export function asegurarPlanificador(): void {
+  // El bot de Telegram vive en el mismo proceso: se levanta con el planificador.
+  asegurarSondeoTelegram();
+
   if (globalThis.__planificadorRecordatorios || INTERVALO_MS <= 0) return;
 
   const temporizador = setInterval(() => {

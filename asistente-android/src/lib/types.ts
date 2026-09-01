@@ -1,5 +1,8 @@
 export type RolMensaje = 'user' | 'assistant';
 
+/** Por dónde entró o salió el mensaje. */
+export type Canal = 'app' | 'telegram';
+
 export type EstadoTarea = 'pendiente' | 'hecha';
 
 export type Prioridad = 'baja' | 'media' | 'alta';
@@ -37,6 +40,8 @@ export interface Mensaje {
   tareasAdjuntas: string[];
   /** Un aviso automático de recordatorio, no una respuesta del asistente. */
   esRecordatorio: boolean;
+  /** Canal por el que se envió o se recibió. */
+  canal: Canal;
 }
 
 export interface Estado {

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "node --experimental-strip-types --test pruebas/*.test.mjs"
+    "test": "node --experimental-strip-types --test pruebas/*.test.mjs",
+    "telegram": "node scripts/telegram.mjs"
   },
   "dependencies": {
     "next": "14.2.35",
