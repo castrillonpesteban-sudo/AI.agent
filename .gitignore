@@ -1,0 +1,4 @@
+# Claves y configuración local — nunca al repositorio
+.env
+.env.local
+.claude/settings.local.json

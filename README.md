@@ -76,6 +76,67 @@ que cambia es la salida.
             └── respuesta-a-hallazgos.md
 ```
 
+## Búsqueda web en vivo: servidor MCP de Perplexity
+
+El repositorio deja configurado el servidor MCP oficial de la API de Perplexity en `.mcp.json`,
+para consultar la web en el momento — norma vigente, alertas del INVIMA, fichas técnicas, precios
+de referencia — en vez de responder de memoria.
+
+### Puesta en marcha
+
+1. Sacar una clave en el portal de la API de Perplexity (https://www.perplexity.ai/account/api).
+2. Exportarla antes de abrir Claude Code:
+
+   ```bash
+   export PERPLEXITY_API_KEY="pplx-..."
+   ```
+
+   Conviene dejarla en `~/.zshrc` o `~/.bashrc` para no repetirlo en cada sesión.
+3. Abrir Claude Code en esta carpeta y confirmar el servidor del proyecto. Con `/mcp` se ve el
+   estado; debe aparecer `perplexity` conectado.
+
+La clave **no se escribe en `.mcp.json`**: el archivo la toma de la variable de entorno con
+`${PERPLEXITY_API_KEY}`, así que nunca llega al repositorio. `.env.example` sirve de plantilla y
+`.gitignore` bloquea `.env` y `.claude/settings.local.json`.
+
+### Herramientas que quedan disponibles
+
+| Herramienta | Para qué |
+|---|---|
+| `perplexity_search` | Búsqueda web directa, con resultados rankeados y metadatos |
+| `perplexity_ask` | Pregunta conversacional con búsqueda en tiempo real (rápida) |
+| `perplexity_research` | Investigación a fondo, con informe y fuentes |
+| `perplexity_reason` | Razonamiento sobre lo que encuentra |
+
+`.claude/settings.json` las deja preaprobadas: son de solo lectura, no tocan nada del equipo ni
+de la institución.
+
+### Alternativa local (stdio)
+
+Si se prefiere correr el servidor en la máquina en lugar del endpoint remoto, se reemplaza el
+bloque de `.mcp.json` por:
+
+```json
+{
+  "mcpServers": {
+    "perplexity": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@perplexity-ai/mcp-server"],
+      "env": { "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}" }
+    }
+  }
+}
+```
+
+Requiere Node instalado. Si aparece un error de EOF al iniciar, usar `-yq` en lugar de `-y`.
+
+### Advertencia de uso
+
+Perplexity resume y cita, pero no es fuente. Para habilitación sigue mandando la regla del
+repositorio: **verificar contra el texto oficial antes de citar un artículo o un criterio**. La
+búsqueda sirve para llegar rápido a la fuente, no para reemplazarla.
+
 ## Advertencia sobre la normativa
 
 La habilitación cambió de norma el **5 de agosto de 2026**: la Resolución 1732 de 2026 adopta un
