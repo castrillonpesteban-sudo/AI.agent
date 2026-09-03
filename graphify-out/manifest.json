@@ -1,0 +1,332 @@
+{
+  ".claude/settings.json": {
+    "mtime": 1788432701.8465545,
+    "seen": 1788433326.583098,
+    "ast_hash": "dbe039a15c5c2eb60e34dccc1af0cbb5",
+    "semantic_hash": "dbe039a15c5c2eb60e34dccc1af0cbb5"
+  },
+  "asistente-android/.eslintrc.json": {
+    "mtime": 1788432492.3374023,
+    "seen": 1788433326.5831015,
+    "ast_hash": "9b8be5ef96ddd69ecd1ddc1554c61a88",
+    "semantic_hash": "9b8be5ef96ddd69ecd1ddc1554c61a88"
+  },
+  "asistente-android/next.config.js": {
+    "mtime": 1788432492.3374023,
+    "seen": 1788433326.5831032,
+    "ast_hash": "f3027f98a615244cc89e651a3d93334f",
+    "semantic_hash": "f3027f98a615244cc89e651a3d93334f"
+  },
+  "asistente-android/package.json": {
+    "mtime": 1788432492.339281,
+    "seen": 1788433326.5831048,
+    "ast_hash": "88f068912c01d9839a40efbfec534a86",
+    "semantic_hash": "88f068912c01d9839a40efbfec534a86"
+  },
+  "asistente-android/postcss.config.js": {
+    "mtime": 1788432492.339281,
+    "seen": 1788433326.583106,
+    "ast_hash": "8640f9b2e6475cc3f5b1ff4548925765",
+    "semantic_hash": "8640f9b2e6475cc3f5b1ff4548925765"
+  },
+  "asistente-android/public/sw.js": {
+    "mtime": 1788432492.3428216,
+    "seen": 1788433326.5831075,
+    "ast_hash": "68dd8daaab08eef8b1636f04619f6c14",
+    "semantic_hash": "68dd8daaab08eef8b1636f04619f6c14"
+  },
+  "asistente-android/src/app/api/assistant/route.ts": {
+    "mtime": 1788432492.3448877,
+    "seen": 1788433326.5831091,
+    "ast_hash": "fda73605c120befeb927a434635bcd2d",
+    "semantic_hash": "fda73605c120befeb927a434635bcd2d"
+  },
+  "asistente-android/src/app/layout.tsx": {
+    "mtime": 1788432492.3448877,
+    "seen": 1788433326.5831192,
+    "ast_hash": "8e27d1485ed62c688a9cd1923af7a776",
+    "semantic_hash": "8e27d1485ed62c688a9cd1923af7a776"
+  },
+  "asistente-android/src/app/manifest.ts": {
+    "mtime": 1788432492.3448877,
+    "seen": 1788433326.5831218,
+    "ast_hash": "d232ed29ae9c1f6b93c2f1bae35918e2",
+    "semantic_hash": "d232ed29ae9c1f6b93c2f1bae35918e2"
+  },
+  "asistente-android/src/app/page.tsx": {
+    "mtime": 1788432492.3448877,
+    "seen": 1788433326.5831234,
+    "ast_hash": "316a5e829f955d615ad9de485a86c7b8",
+    "semantic_hash": "316a5e829f955d615ad9de485a86c7b8"
+  },
+  "asistente-android/src/components/ChatWindow.tsx": {
+    "mtime": 1788432492.3448877,
+    "seen": 1788433326.5831246,
+    "ast_hash": "a65fb1c3c1e4c488d5e4831fee05f53e",
+    "semantic_hash": "a65fb1c3c1e4c488d5e4831fee05f53e"
+  },
+  "asistente-android/src/components/MessageBubble.tsx": {
+    "mtime": 1788432492.3483698,
+    "seen": 1788433326.583126,
+    "ast_hash": "d82aca26e15e594a28cd6e12ec1dc5ef",
+    "semantic_hash": "d82aca26e15e594a28cd6e12ec1dc5ef"
+  },
+  "asistente-android/src/components/RegisterServiceWorker.tsx": {
+    "mtime": 1788432492.3483698,
+    "seen": 1788433326.583127,
+    "ast_hash": "89e66196e56f061dfe64ee2f02888bad",
+    "semantic_hash": "89e66196e56f061dfe64ee2f02888bad"
+  },
+  "asistente-android/src/lib/types.ts": {
+    "mtime": 1788432492.3483698,
+    "seen": 1788433326.5831282,
+    "ast_hash": "821b97e9aa936efaddca85e67d67a37e",
+    "semantic_hash": "821b97e9aa936efaddca85e67d67a37e"
+  },
+  "asistente-android/src/lib/useChat.ts": {
+    "mtime": 1788432492.349678,
+    "seen": 1788433326.5831294,
+    "ast_hash": "437653abafcae48cd2f6a9eee0f78fc9",
+    "semantic_hash": "437653abafcae48cd2f6a9eee0f78fc9"
+  },
+  "asistente-android/tailwind.config.ts": {
+    "mtime": 1788432492.349678,
+    "seen": 1788433326.5831304,
+    "ast_hash": "f8264faa017768f5de2045aaffb738ef",
+    "semantic_hash": "f8264faa017768f5de2045aaffb738ef"
+  },
+  "asistente-android/tsconfig.json": {
+    "mtime": 1788432492.349678,
+    "seen": 1788433326.5831316,
+    "ast_hash": "ee5e7e4ceaa72495fb5c5cd22956359f",
+    "semantic_hash": "ee5e7e4ceaa72495fb5c5cd22956359f"
+  },
+  ".claude/CLAUDE.md": {
+    "mtime": 1788432701.8460097,
+    "seen": 1788433326.5831327,
+    "ast_hash": "9b31786b637be3c13978bec4c2330752",
+    "semantic_hash": "9b31786b637be3c13978bec4c2330752"
+  },
+  ".claude/agents/auditor-habilitacion.md": {
+    "mtime": 1788006127.882349,
+    "seen": 1788433326.5831337,
+    "ast_hash": "c83ecddb6370982bd44e9584172ebf8d",
+    "semantic_hash": "c83ecddb6370982bd44e9584172ebf8d"
+  },
+  ".claude/skills/auditoria-habilitacion/SKILL.md": {
+    "mtime": 1788432492.331281,
+    "seen": 1788433326.5831344,
+    "ast_hash": "329443991b23abfbbfc7f8e9977776a7",
+    "semantic_hash": "329443991b23abfbbfc7f8e9977776a7"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/acta-visita-verificacion.md": {
+    "mtime": 1788006127.8848493,
+    "seen": 1788433326.5831356,
+    "ast_hash": "3c9d202b452c42b99303525a8dd54f88",
+    "semantic_hash": "3c9d202b452c42b99303525a8dd54f88"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/informe-auditoria.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831363,
+    "ast_hash": "b318e395c3d214c5c4d42a0c499bff0f",
+    "semantic_hash": "b318e395c3d214c5c4d42a0c499bff0f"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/lista-chequeo-autoevaluacion.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831375,
+    "ast_hash": "c9eee1c7c3226fb4f41a8bbe4939f1bb",
+    "semantic_hash": "c9eee1c7c3226fb4f41a8bbe4939f1bb"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/matriz-evidencia.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831385,
+    "ast_hash": "f65b34ea080cc781dbbc049759b9b823",
+    "semantic_hash": "f65b34ea080cc781dbbc049759b9b823"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/plan-de-mejoramiento.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831397,
+    "ast_hash": "881a7e5976b8dff72f36b394e0f7fb46",
+    "semantic_hash": "881a7e5976b8dff72f36b394e0f7fb46"
+  },
+  ".claude/skills/auditoria-habilitacion/plantillas/respuesta-a-hallazgos.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831406,
+    "ast_hash": "a73eef8a2776706ab082b9dc16cfcb47",
+    "semantic_hash": "a73eef8a2776706ab082b9dc16cfcb47"
+  },
+  ".claude/skills/auditoria-habilitacion/references/ciclo-reps.md": {
+    "mtime": 1788006127.8850708,
+    "seen": 1788433326.5831416,
+    "ast_hash": "c8c5eae0a2e6e253c71f10c63d0573f0",
+    "semantic_hash": "c8c5eae0a2e6e253c71f10c63d0573f0"
+  },
+  ".claude/skills/auditoria-habilitacion/references/despues-de-la-visita.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831428,
+    "ast_hash": "4efea560dd5e7a27564f7e2eb3baae84",
+    "semantic_hash": "4efea560dd5e7a27564f7e2eb3baae84"
+  },
+  ".claude/skills/auditoria-habilitacion/references/dia-de-la-visita.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831435,
+    "ast_hash": "f2deb4ef885859f38c0804cc1b2a8927",
+    "semantic_hash": "f2deb4ef885859f38c0804cc1b2a8927"
+  },
+  ".claude/skills/auditoria-habilitacion/references/dotacion-e-ingenieria-clinica.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831444,
+    "ast_hash": "cdc5b407a1f547e5b2d1ff593189340b",
+    "semantic_hash": "cdc5b407a1f547e5b2d1ff593189340b"
+  },
+  ".claude/skills/auditoria-habilitacion/references/estandares-y-criterios.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831454,
+    "ast_hash": "988d8532cc236006bf1eff2ee02247f8",
+    "semantic_hash": "988d8532cc236006bf1eff2ee02247f8"
+  },
+  ".claude/skills/auditoria-habilitacion/references/expediente-de-habilitacion.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831463,
+    "ast_hash": "f7a166359721d78f002d678e86462ee1",
+    "semantic_hash": "f7a166359721d78f002d678e86462ee1"
+  },
+  ".claude/skills/auditoria-habilitacion/references/hallazgos-frecuentes.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831473,
+    "ast_hash": "8870842e1c0e04db4d2f2570db382175",
+    "semantic_hash": "8870842e1c0e04db4d2f2570db382175"
+  },
+  ".claude/skills/auditoria-habilitacion/references/marco-normativo.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.583148,
+    "ast_hash": "3bf805ec3a8f493a00bb97e45ac1a9b2",
+    "semantic_hash": "3bf805ec3a8f493a00bb97e45ac1a9b2"
+  },
+  ".claude/skills/auditoria-habilitacion/references/metodo-auditoria.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.583155,
+    "ast_hash": "dd2935281425cc852ac7e9f8a4e2fcce",
+    "semantic_hash": "dd2935281425cc852ac7e9f8a4e2fcce"
+  },
+  ".claude/skills/auditoria-habilitacion/references/postura-del-auditor.md": {
+    "mtime": 1788432492.331281,
+    "seen": 1788433326.5831559,
+    "ast_hash": "2a468dd7741e4a9c014f18878b43f576",
+    "semantic_hash": "2a468dd7741e4a9c014f18878b43f576"
+  },
+  ".claude/skills/auditoria-habilitacion/references/preparacion-de-la-visita.md": {
+    "mtime": 1788006127.8868835,
+    "seen": 1788433326.5831568,
+    "ast_hash": "54278c02d169b8b60767d654aa9ae1d9",
+    "semantic_hash": "54278c02d169b8b60767d654aa9ae1d9"
+  },
+  ".claude/skills/auditoria-habilitacion/references/transicion-3100-a-1732.md": {
+    "mtime": 1788006127.889071,
+    "seen": 1788433326.5831578,
+    "ast_hash": "6dc513b436801ebb3b9cc620000d7b54",
+    "semantic_hash": "6dc513b436801ebb3b9cc620000d7b54"
+  },
+  ".claude/skills/graphify/SKILL.md": {
+    "mtime": 1788432701.8455396,
+    "seen": 1788433326.5831587,
+    "ast_hash": "1656a8a8e4a05bbe69f32cd15de81e87",
+    "semantic_hash": "1656a8a8e4a05bbe69f32cd15de81e87"
+  },
+  ".claude/skills/graphify/references/add-watch.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831594,
+    "ast_hash": "d59d027fe449f06aa03905a01184e779",
+    "semantic_hash": "d59d027fe449f06aa03905a01184e779"
+  },
+  ".claude/skills/graphify/references/exports.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831604,
+    "ast_hash": "9da2a2152e60a22f07f05fed5158f287",
+    "semantic_hash": "9da2a2152e60a22f07f05fed5158f287"
+  },
+  ".claude/skills/graphify/references/extraction-spec.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831614,
+    "ast_hash": "42fef56a01698118f7fd722acdadea34",
+    "semantic_hash": "42fef56a01698118f7fd722acdadea34"
+  },
+  ".claude/skills/graphify/references/github-and-merge.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831623,
+    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
+    "semantic_hash": "cde13df085e4c492aeb7ba298a996d0d"
+  },
+  ".claude/skills/graphify/references/hooks.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831652,
+    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
+    "semantic_hash": "3f545db6ce646650bb9de588f5512a27"
+  },
+  ".claude/skills/graphify/references/query.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831661,
+    "ast_hash": "3c46f8ad006874260614ed8657d02307",
+    "semantic_hash": "3c46f8ad006874260614ed8657d02307"
+  },
+  ".claude/skills/graphify/references/transcribe.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.5831673,
+    "ast_hash": "67b6a5fa6c0974e18f60db9f8932fbd8",
+    "semantic_hash": "67b6a5fa6c0974e18f60db9f8932fbd8"
+  },
+  ".claude/skills/graphify/references/update.md": {
+    "mtime": 1788432694.8032763,
+    "seen": 1788433326.583168,
+    "ast_hash": "9378bd03d56baaf78bd738ab3848f142",
+    "semantic_hash": "9378bd03d56baaf78bd738ab3848f142"
+  },
+  "CLAUDE.md": {
+    "mtime": 1788432701.8463438,
+    "seen": 1788433326.583169,
+    "ast_hash": "82efb97a359f5c7290bf2513d14686be",
+    "semantic_hash": "82efb97a359f5c7290bf2513d14686be"
+  },
+  "README.md": {
+    "mtime": 1788432492.331281,
+    "seen": 1788433326.58317,
+    "ast_hash": "15e703f2845cc3add56e7942038790c2",
+    "semantic_hash": "15e703f2845cc3add56e7942038790c2"
+  },
+  "asistente-android/README.md": {
+    "mtime": 1788432492.3374023,
+    "seen": 1788433326.583171,
+    "ast_hash": "7d90cd73668e0192eef17b27693bb2d8",
+    "semantic_hash": "7d90cd73668e0192eef17b27693bb2d8"
+  },
+  "asistente-android/public/offline.html": {
+    "mtime": 1788432492.3428216,
+    "seen": 1788433326.5831718,
+    "ast_hash": "d8d0601616dbaa1129e7233b583a22ca",
+    "semantic_hash": "d8d0601616dbaa1129e7233b583a22ca"
+  },
+  "asistente-android/public/icons/apple-touch-icon.png": {
+    "mtime": 1788432492.3421447,
+    "seen": 1788433326.5831726,
+    "ast_hash": "f35665c2050d7d46d18a4bfc1f551d6a",
+    "semantic_hash": "f35665c2050d7d46d18a4bfc1f551d6a"
+  },
+  "asistente-android/public/icons/icon-192.png": {
+    "mtime": 1788432492.3428216,
+    "seen": 1788433326.5831735,
+    "ast_hash": "1da6955957501aa09e41c521907521ea",
+    "semantic_hash": "1da6955957501aa09e41c521907521ea"
+  },
+  "asistente-android/public/icons/icon-512.png": {
+    "mtime": 1788432492.3428216,
+    "seen": 1788433326.5831745,
+    "ast_hash": "bba847d278c1ab07328267a709e22af5",
+    "semantic_hash": "bba847d278c1ab07328267a709e22af5"
+  },
+  "asistente-android/public/icons/icon-maskable-512.png": {
+    "mtime": 1788432492.3428216,
+    "seen": 1788433326.5831754,
+    "ast_hash": "fe830fd2d4061d430fcdcba431d937a5",
+    "semantic_hash": "fe830fd2d4061d430fcdcba431d937a5"
+  }
+}
