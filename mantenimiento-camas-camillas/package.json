@@ -1,0 +1,10 @@
+{
+  "name": "mantenimiento-camas-camillas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Control de mantenimiento preventivo mensual de camas y camillas, Clinica Victoriana.",
+  "dependencies": {
+    "@netlify/blobs": "^10.7.13"
+  }
+}

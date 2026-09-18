@@ -1,0 +1,6 @@
+# Sitio estatico + una funcion serverless. Sin build step, igual que en Vercel.
+[build]
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"

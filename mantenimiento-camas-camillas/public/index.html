@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mantenimiento Camas y Camillas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#f4f6f5; --surface:#ffffff; --surface-2:#f8faf9;
+  --ink:#171d1c; --ink-2:#5a6664; --ink-3:#8b9593;
+  --line:#e2e7e5; --line-2:#cfd6d4;
+  --accent:#0d6a63; --accent-soft:#e6efed;
+  --pend:#98a2a0;
+  --mp:#96601b; --mp-bg:#fbf0da; --mp-ink:#5c3c0f;
+  --keep:#39618f; --keep-bg:#e3ecf7; --keep-ink:#213c5c;
+  --ok:#1a6f4b; --ok-bg:#dceee3; --ok-ink:#0f4530;
+  --warn:#9c3a34;
+  --r:8px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#0f1413; --surface:#151b1a; --surface-2:#1a2120;
+    --ink:#e9efed; --ink-2:#a4b0ae; --ink-3:#7a8785;
+    --line:#242e2d; --line-2:#33403e;
+    --accent:#5cbfb3; --accent-soft:#16302d;
+    --pend:#818d8b;
+    --mp:#e8b878; --mp-bg:#3a2b12; --mp-ink:#f3d6a3;
+    --keep:#9fbeea; --keep-bg:#1c2c40; --keep-ink:#c3d6f2;
+    --ok:#7ed4a6; --ok-bg:#153427; --ok-ink:#aeead0;
+    --warn:#dd8a84;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2{font-family:Archivo,"IBM Plex Sans",sans-serif;margin:0;text-wrap:balance;letter-spacing:-.015em}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:none}
+:focus-visible{outline:1.5px solid var(--accent);outline-offset:2px;border-radius:3px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px}
+
+header.top{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding-block:14px}
+.brand{display:flex;flex-direction:column;gap:3px;margin-right:auto}
+.brand h1{font-size:17px;font-weight:600}
+.brand .sub{font-size:11px;color:var(--ink-3);letter-spacing:.1em;text-transform:uppercase}
+.who{display:flex;align-items:center;gap:9px}
+.who label{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+select.who-sel{border-bottom:1px solid var(--line-2);padding:3px 18px 3px 2px;font-size:14px;
+  cursor:pointer;background:transparent;appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);
+  background-position:calc(100% - 8px) calc(50% + 1px),calc(100% - 4px) calc(50% + 1px);
+  background-size:4px 4px,4px 4px;background-repeat:no-repeat}
+select.who-sel:hover{border-color:var(--accent)}
+.btn{border:1px solid var(--line-2);border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer;color:var(--ink-2)}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.gauge{display:flex;align-items:center;gap:11px}
+.gauge .num{font-family:Archivo;font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.gauge .lbl{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.12em;margin-top:3px}
+.bar{height:3px;border-radius:99px;background:var(--line);overflow:hidden;width:120px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .35s ease}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:6px;flex:none}
+.dot.on{background:var(--ok)} .dot.off{background:var(--warn)} .dot.wait{background:var(--pend)}
+.connstat{display:flex;align-items:center;font-size:11.5px;color:var(--ink-3)}
+
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));
+  gap:0 26px;border-bottom:1px solid var(--line);padding-block:22px 20px}
+.sum-cell{display:flex;flex-direction:column;gap:3px;padding-block:6px}
+.sum-cell .nm{font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+.sum-cell .vl{font-family:Archivo;font-weight:600;font-size:19px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.sum-cell .vl span{font-size:11.5px;font-weight:400;color:var(--ink-3);font-family:"IBM Plex Sans";letter-spacing:0}
+
+nav.tabs{display:flex;gap:26px;overflow-x:auto;padding-block:4px;border-bottom:1px solid var(--line);scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{white-space:nowrap;display:flex;flex-direction:column;gap:5px;align-items:flex-start;
+  cursor:pointer;padding:14px 0 12px;border-bottom:2px solid transparent;margin-bottom:-1px;color:var(--ink-3)}
+nav.tabs button .t{font-family:Archivo;font-weight:600;font-size:14px;color:var(--ink-2)}
+nav.tabs button .r{font-size:11px;font-variant-numeric:tabular-nums}
+nav.tabs button:hover .t{color:var(--ink)}
+nav.tabs button[aria-selected="true"]{border-bottom-color:var(--accent)}
+nav.tabs button[aria-selected="true"] .t{color:var(--ink)}
+nav.tabs button[aria-selected="true"] .r{color:var(--accent)}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding-block:18px 10px}
+.search{flex:1 1 220px;min-width:0;background:transparent;border:none;border-bottom:1px solid var(--line-2);padding:7px 2px;font-size:14px}
+.search::placeholder{color:var(--ink-3)}
+.search:focus{outline:none;border-bottom-color:var(--accent)}
+.chips{display:flex;gap:4px;flex-wrap:wrap}
+.chip{border-radius:99px;padding:5px 12px;font-size:12.5px;cursor:pointer;color:var(--ink-3)}
+.chip:hover{color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);font-weight:500}
+
+.group-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-block:14px 8px}
+.group-head h2{font-size:15px;font-weight:600}
+.group-head .meta{font-size:12.5px;color:var(--ink-3)}
+.group-head .meta strong{color:var(--ink-2);font-weight:500}
+.rows{display:flex;flex-direction:column;padding-bottom:56px;border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line);background:var(--surface)}
+.rhead{display:grid;grid-template-columns:108px 1fr auto auto;gap:14px;align-items:center;padding:11px 12px;cursor:pointer}
+.rhead:hover{background:var(--surface-2)}
+.placa{font-family:"IBM Plex Mono";font-size:13px;font-weight:500;letter-spacing:-.02em;color:var(--ink-2)}
+.loc{font-size:14px;line-height:1.35}
+.loc .eq{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.stages{display:flex;gap:4px}
+.st{border:1px solid var(--line-2);border-radius:99px;padding:4px 10px;font-size:10.5px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;cursor:pointer;line-height:1.3;color:var(--ink-3)}
+.st:hover{border-color:var(--ink-3);color:var(--ink-2)}
+.st.on-mp{border-color:var(--mp);background:var(--mp-bg);color:var(--mp-ink);font-weight:600}
+.st.on-keep{border-color:var(--keep);background:var(--keep-bg);color:var(--keep-ink);font-weight:600}
+.st.on-ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-ink);font-weight:600}
+.pill{font-size:11px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;color:var(--ink-3)}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;flex:none}
+.pill.pendiente{color:var(--pend)} .pill.mp{color:var(--mp)} .pill.keeper{color:var(--keep)} .pill.ok{color:var(--ok)}
+.row.done .placa,.row.done .loc{color:var(--ink-3)}
+
+.detail{border-top:1px solid var(--line);background:var(--surface-2);padding:18px 12px 16px;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:16px}
+.detail label{display:flex;flex-direction:column;gap:5px;font-size:10.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+.detail input,.detail textarea,.detail select{background:var(--surface);border:1px solid var(--line-2);border-radius:6px;
+  padding:8px 9px;font-size:14px;text-transform:none;letter-spacing:0;color:var(--ink);width:100%}
+.detail input:focus,.detail textarea:focus,.detail select:focus{outline:none;border-color:var(--accent)}
+.detail .wide{grid-column:1/-1}
+.detail textarea{min-height:64px;resize:vertical;font-family:inherit;line-height:1.5}
+.dmeta{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:12px}
+.linkish{color:var(--warn);font-size:11.5px;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+.empty{padding:36px 14px;text-align:center;color:var(--ink-3);font-size:14px}
+.banner{margin-top:16px;padding:10px 13px;border-radius:var(--r);background:var(--surface);color:var(--mp);font-size:12.5px;border:1px solid var(--line-2)}
+@media (max-width:640px){
+  .wrap{padding-inline:16px}
+  .rhead{grid-template-columns:1fr auto;grid-template-areas:"pl pill" "loc loc" "st st";gap:9px;padding:13px 4px}
+  .placa{grid-area:pl}.loc{grid-area:loc}.stages{grid-area:st}.pill{grid-area:pill;justify-self:end}
+  .detail{padding-inline:4px}
+  .top-in{gap:14px}.brand{flex:1 1 100%}
+  nav.tabs{gap:20px}
+  .summary{gap:0 18px;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div class="brand">
+      <h1>Mantenimiento de camas y camillas</h1>
+      <div class="sub">Clínica Victoriana · Ingeniería Biomédica · <span id="periodo"></span></div>
+    </div>
+    <div class="who">
+      <label for="ingeniero">Ingeniero</label>
+      <select class="who-sel" id="ingeniero"></select>
+    </div>
+    <div class="connstat" id="connstat"><span class="dot wait"></span>Conectando…</div>
+    <div class="gauge">
+      <div><div class="num" id="gnum">0%</div><div class="lbl">Cerradas</div></div>
+      <div class="bar"><i id="gbar" style="width:0%"></i></div>
+    </div>
+    <button class="btn" id="csv">Exportar CSV</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="banner"></div>
+  <section class="summary" id="summary"></section>
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+  <div class="toolbar">
+    <input class="search" id="q" type="search" placeholder="Buscar placa, habitación o servicio" autocomplete="off">
+    <div class="chips" id="filters">
+      <button class="chip" data-f="all" aria-pressed="true">Todas</button>
+      <button class="chip" data-f="pendiente" aria-pressed="false">Pendientes</button>
+      <button class="chip" data-f="proceso" aria-pressed="false">En proceso</button>
+      <button class="chip" data-f="ok" aria-pressed="false">Cerradas</button>
+    </div>
+  </div>
+  <div class="group-head" id="ghead"></div>
+  <div class="rows" id="rows"></div>
+</main>
+
+<script>
+const GRUPOS = [{"id":"p1","nombre":"Piso 1","resp":"Esteban","items":[{"p":"CVEB-1240","s":"526118","m":"LOS PINOS PS4","u":"QUIMIOTERAPIA","t":"Cama hospitalaria"},{"p":"CVEB-1239","s":"526129","m":"LOS PINOS PS4","u":"QUIMIOTERAPIA","t":"Cama hospitalaria"}]},{"id":"p2","nombre":"Piso 2","resp":"Roci","items":[{"p":"CVEB-0201","s":"515443","m":"LOS PINOS 860","u":"UCI, CUBICULO 10","t":"Cama hospitalaria"},{"p":"CVEB-0202","s":"515444","m":"LOS PINOS 860","u":"UCI, CUBICULO 11","t":"Cama hospitalaria"},{"p":"CVEB-0203","s":"515445","m":"LOS PINOS 860","u":"UCI, CUBICULO 2","t":"Cama hospitalaria"},{"p":"CVEB-0210","s":"515807","m":"LOS PINOS 860","u":"UCI, CUBICULO 2","t":"Cama hospitalaria"},{"p":"CVEB-0206","s":"515803","m":"LOS PINOS 860","u":"UCI, CUBICULO 3","t":"Cama hospitalaria"},{"p":"CVEB-0200","s":"515442","m":"LOS PINOS 860","u":"UCI, CUBICULO 4","t":"Cama hospitalaria"},{"p":"CVEB-0208","s":"515805","m":"LOS PINOS 860","u":"UCI, CUBICULO 5","t":"Cama hospitalaria"},{"p":"CVEB-0207","s":"515804","m":"LOS PINOS 860","u":"UCI, CUBICULO 7","t":"Cama hospitalaria"},{"p":"CVEB-1127","s":"524887","m":"LOS PINOS PS4","u":"UCI, CUBICULO 7","t":"Cama hospitalaria"},{"p":"CVEB-0205","s":"515801","m":"LOS PINOS 860","u":"UCI, CUBICULO 8","t":"Cama hospitalaria"},{"p":"CVEB-0204","s":"515446","m":"LOS PINOS 860","u":"UCI, CUBICULO 9","t":"Cama hospitalaria"}]},{"id":"p3","nombre":"Piso 3","resp":"Silvana","items":[{"p":"CVEB-0308","s":"515308","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 301","t":"Cama hospitalaria"},{"p":"CVEB-0304","s":"515304","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 302","t":"Cama hospitalaria"},{"p":"CVEB-0313","s":"515313","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 303","t":"Cama hospitalaria"},{"p":"CVEB-0839","s":"515350","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 304","t":"Cama hospitalaria"},{"p":"CVEB-0300","s":"515300","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 305","t":"Cama hospitalaria"},{"p":"CVEB-0302","s":"515302","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 306","t":"Cama hospitalaria"},{"p":"CVEB-0303","s":"515303","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 307","t":"Cama hospitalaria"},{"p":"CVEB-0301","s":"515301","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 308","t":"Cama hospitalaria"},{"p":"CVEB-0311","s":"515311","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 309","t":"Cama hospitalaria"},{"p":"CVEB-0307","s":"515307","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 310","t":"Cama hospitalaria"},{"p":"CVEB-0306","s":"515306","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 311","t":"Cama hospitalaria"},{"p":"CVEB-0312","s":"515312","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 312","t":"Cama hospitalaria"},{"p":"CVEB-0309","s":"515309","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 313","t":"Cama hospitalaria"},{"p":"CVEB-0310","s":"515310","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 314","t":"Cama hospitalaria"},{"p":"CVEB-0305","s":"515305","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 315","t":"Cama hospitalaria"},{"p":"CVEB-0836","s":"515345","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 316","t":"Cama hospitalaria"},{"p":"CVEB-0314","s":"515314","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 317","t":"Cama hospitalaria"},{"p":"CVEB-0319","s":"515811","m":"LOS PINOS 860","u":"UCE, CUBICULO 1","t":"Cama hospitalaria"},{"p":"CVEB-0316","s":"515808","m":"LOS PINOS 860","u":"UCE, CUBICULO 2","t":"Cama hospitalaria"},{"p":"CVEB-0317","s":"515809","m":"LOS PINOS 860","u":"UCE, CUBICULO 3","t":"Cama hospitalaria"},{"p":"CVEB-0315","s":"515802","m":"LOS PINOS 860","u":"UCE, CUBICULO 4","t":"Cama hospitalaria"},{"p":"CVEB-0320","s":"515812","m":"LOS PINOS 860","u":"UCE, CUBICULO 5","t":"Cama hospitalaria"},{"p":"CVEB-0318","s":"515810","m":"LOS PINOS 860","u":"UCE, CUBICULO 6","t":"Cama hospitalaria"}]},{"id":"p4","nombre":"Piso 4","resp":"Sharon y Julián","items":[{"p":"CVEB-0837","s":"515387","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 401","t":"Cama hospitalaria"},{"p":"CVEB-0838","s":"515358","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 402","t":"Cama hospitalaria"},{"p":"CVEB-0841","s":"515376","m":"LOS PINOS 760","u":"HOSPITALIZACIÓN, PISO 4, HOSPITALIZACION, HABITACION 402 B","t":"Cama hospitalaria"},{"p":"CVEB-0209","s":"515806","m":"LOS PINOS 860","u":"HOSPITALIZACION, HABITACION 403","t":"Cama hospitalaria"},{"p":"CVEB-0843","s":"515359","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 404","t":"Cama hospitalaria"},{"p":"CVEB-0844","s":"515370","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 405","t":"Cama hospitalaria"},{"p":"CVEB-0849","s":"515388","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 406","t":"Cama hospitalaria"},{"p":"CVEB-0846","s":"515374","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 407","t":"Cama hospitalaria"},{"p":"CVEB-0847","s":"515355","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 408","t":"Cama hospitalaria"},{"p":"CVEB-0848","s":"515343","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 409","t":"Cama hospitalaria"},{"p":"CVEB-0859","s":"515381","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 410","t":"Cama hospitalaria"},{"p":"CVEB-0850","s":"515356","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 411","t":"Cama hospitalaria"},{"p":"CVEB-0851","s":"515344","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 412","t":"Cama hospitalaria"},{"p":"CVEB-0852","s":"515362","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 413","t":"Cama hospitalaria"},{"p":"CVEB-0853","s":"515339","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 414","t":"Cama hospitalaria"},{"p":"CVEB-0854","s":"515352","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 415","t":"Cama hospitalaria"},{"p":"CVEB-0855","s":"515360","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 417","t":"Cama hospitalaria"},{"p":"CVEB-0856","s":"515372","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 418","t":"Cama hospitalaria"},{"p":"CVEB-0857","s":"515371","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 419","t":"Cama hospitalaria"},{"p":"CVEB-0858","s":"515353","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 420","t":"Cama hospitalaria"},{"p":"CVEB-0845","s":"515368","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 421","t":"Cama hospitalaria"},{"p":"CVEB-0860","s":"515375","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 422","t":"Cama hospitalaria"},{"p":"CVEB-0861","s":"515347","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 423","t":"Cama hospitalaria"},{"p":"CVEB-0862","s":"515384","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 424","t":"Cama hospitalaria"},{"p":"CVEB-0863","s":"515346","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 425","t":"Cama hospitalaria"}]},{"id":"p5","nombre":"Piso 5","resp":"Esteban","items":[{"p":"CVEB-0811","s":"515342","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 501","t":"Cama hospitalaria"},{"p":"CVEB-0812","s":"515336","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 502","t":"Cama hospitalaria"},{"p":"CVEB-0813","s":"515363","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 503","t":"Cama hospitalaria"},{"p":"CVEB-0814","s":"515366","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 504","t":"Cama hospitalaria"},{"p":"CVEB-0964","s":"519715","m":"LOS PINOS 860","u":"HOSPITALIZACION, HABITACION 505","t":"Cama hospitalaria"},{"p":"CVEB-0816","s":"515354","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 506","t":"Cama hospitalaria"},{"p":"CVEB-0830","s":"515348","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 507","t":"Cama hospitalaria"},{"p":"CVEB-0818","s":"515340","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 508","t":"Cama hospitalaria"},{"p":"CVEB-0819","s":"515349","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 509","t":"Cama hospitalaria"},{"p":"CVEB-0820","s":"515382","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 510","t":"Cama hospitalaria"},{"p":"CVEB-0821","s":"515377","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 511","t":"Cama hospitalaria"},{"p":"CVEB-0822","s":"515378","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 512","t":"Cama hospitalaria"},{"p":"CVEB-0823","s":"515383","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 513","t":"Cama hospitalaria"},{"p":"CVEB-0824","s":"515369","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 514","t":"Cama hospitalaria"},{"p":"CVEB-0825","s":"515365","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 515","t":"Cama hospitalaria"},{"p":"CVEB-0826","s":"515379","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 516","t":"Cama hospitalaria"},{"p":"CVEB-0827","s":"515351","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 517","t":"Cama hospitalaria"},{"p":"CVEB-0828","s":"515364","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 518","t":"Cama hospitalaria"},{"p":"CVEB-0829","s":"515341","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 519","t":"Cama hospitalaria"},{"p":"CVEB-0817","s":"515337","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 520","t":"Cama hospitalaria"},{"p":"CVEB-0831","s":"515338","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 521","t":"Cama hospitalaria"},{"p":"CVEB-0832","s":"515380","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 522","t":"Cama hospitalaria"},{"p":"CVEB-0833","s":"515385","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 523","t":"Cama hospitalaria"},{"p":"CVEB-0834","s":"515373","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 524","t":"Cama hospitalaria"},{"p":"CVEB-0835","s":"515357","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 525","t":"Cama hospitalaria"},{"p":"CVEB-0815","s":"515361","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 526","t":"Cama hospitalaria"}]},{"id":"p6","nombre":"Piso 6","resp":"Alejandro","items":[{"p":"CVEB-0615","s":"515330","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 601","t":"Cama hospitalaria"},{"p":"CVEB-0600","s":"515335","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 602","t":"Cama hospitalaria"},{"p":"CVEB-0840","s":"515386","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 602 B","t":"Cama hospitalaria"},{"p":"CVEB-0609","s":"515324","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 603","t":"Cama hospitalaria"},{"p":"CVEB-0608","s":"515323","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 604","t":"Cama hospitalaria"},{"p":"CVEB-0603","s":"515318","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 605","t":"Cama hospitalaria"},{"p":"CVEB-0607","s":"515322","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 606","t":"Cama hospitalaria"},{"p":"CVEB-0612","s":"515327","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 607","t":"Cama hospitalaria"},{"p":"CVEB-0963","s":"519672","m":"LOS PINOS 860","u":"HOSPITALIZACION, HABITACION 608","t":"Cama hospitalaria"},{"p":"CVEB-0610","s":"515325","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 609","t":"Cama hospitalaria"},{"p":"CVEB-0616","s":"515331","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 610","t":"Cama hospitalaria"},{"p":"CVEB-0601","s":"515316","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 611","t":"Cama hospitalaria"},{"p":"CVEB-0617","s":"515332","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 612","t":"Cama hospitalaria"},{"p":"CVEB-0889","s":"515315","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 613","t":"Cama hospitalaria"},{"p":"CVEB-0613","s":"515328","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 614","t":"Cama hospitalaria"},{"p":"CVEB-0614","s":"515329","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 615","t":"Cama hospitalaria"},{"p":"CVEB-0606","s":"515321","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 616","t":"Cama hospitalaria"},{"p":"CVEB-0618","s":"515333","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 617","t":"Cama hospitalaria"},{"p":"CVEB-0604","s":"515319","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 618","t":"Cama hospitalaria"},{"p":"CVEB-0602","s":"515317","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 619","t":"Cama hospitalaria"},{"p":"CVEB-0605","s":"515320","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 620","t":"Cama hospitalaria"},{"p":"CVEB-0611","s":"515326","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 621","t":"Cama hospitalaria"},{"p":"CVEB-0619","s":"515334","m":"LOS PINOS 760","u":"HOSPITALIZACION, HABITACION 622","t":"Cama hospitalaria"}]},{"id":"sot","nombre":"Sótano","resp":"Esteban","items":[{"p":"CVEB-0197","s":"515000","m":"LOS PINOS B-218P","u":"BODEGA","t":"Cama hospitalaria"},{"p":"CVEB-0842","s":"515367","m":"LOS PINOS 760","u":"INGENIERIA BIOMEDICA, TALLER BIOMEDICO","t":"Cama hospitalaria"}]},{"id":"camillas","nombre":"Camillas","resp":"Todo el equipo","items":[{"p":"BLVBM-0012","s":"140222-092","m":"DISPROMEDICS CGT 70-01","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 103","t":"Camilla ginecologica en tuberia"},{"p":"CAREPA-0021","s":"231120-0031","m":"DISPROMEDICS CGT 70-01","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 107","t":"Camilla ginecologica en tuberia"},{"p":"CVCT-0000","s":"704120","m":"LOS PINOS C374","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0001","s":"704118","m":"LOS PINOS C374","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0002","s":"704116","m":"LOS PINOS C374","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0003","s":"704117","m":"LOS PINOS C374","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0004","s":"704119","m":"LOS PINOS C374","u":"NO ENCONTRADOS - HOSPI 4","t":"Camilla de transporte"},{"p":"CVCT-0005","s":"515859","m":"LOS PINOS C 369","u":"CLINICA VICTORIANA","t":"Camilla de transporte"},{"p":"CVCT-0006","s":"515860","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0007","s":"515868","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0008","s":"515867","m":"LOS PINOS C 369","u":"NO ENCONTRADOS - PRODIAGNOSTICO","t":"Camilla de transporte"},{"p":"CVCT-0009","s":"515863","m":"LOS PINOS C 369","u":"GENERAL","t":"Camilla de transporte"},{"p":"CVCT-0010","s":"515871","m":"LOS PINOS C 369","u":"PISO 3 · ENDOSCOPIA · ENDOSCOPIA","t":"Camilla de transporte"},{"p":"CVCT-0011","s":"515857","m":"LOS PINOS C 369","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0012","s":"515865","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0013","s":"515872","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0014","s":"515858","m":"LOS PINOS C 369","u":"PISO 3 · ENDOSCOPIA · ENDOSCOPIA","t":"Camilla de transporte"},{"p":"CVCT-0015","s":"515874","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0016","s":"515864","m":"LOS PINOS C 369","u":"PISO 2 · BODEGA BIOMÉDICA","t":"Camilla de transporte"},{"p":"CVCT-0017","s":"515855","m":"LOS PINOS C 369","u":"PISO 2 · BODEGA BIOMÉDICA","t":"Camilla de transporte"},{"p":"CVCT-0018","s":"515853","m":"LOS PINOS C 369","u":"PISO 3 · ENDOSCOPIA · ENDOSCOPIA","t":"Camilla de transporte"},{"p":"CVCT-0019","s":"515861","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · PREPARACION","t":"Camilla de transporte"},{"p":"CVCT-0020","s":"515870","m":"LOS PINOS C 369","u":"SOTANO 1 · BODEGA","t":"Camilla de transporte"},{"p":"CVCT-0021","s":"515862","m":"LOS PINOS C 369","u":"PISO 4 · SERVICIOS GENERALES Y APOYO · CAMILLEROS","t":"Camilla de transporte"},{"p":"CVCT-0022","s":"515866","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0023","s":"515856","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0025","s":"515854","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · PREPARACION","t":"Camilla de transporte"},{"p":"CVCT-0026","s":"515869","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0027","s":"515880","m":"LOS PINOS C 369","u":"SOTANO 1 · BODEGA","t":"Camilla de transporte"},{"p":"CVCT-0028","s":"515876","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0029","s":"515885","m":"LOS PINOS C 369","u":"3 · HOSPITALIZACIÓN PISO 3","t":"Camilla de transporte"},{"p":"CVCT-0030","s":"515891","m":"LOS PINOS C 369","u":"SOTANO 1 · BODEGA","t":"Camilla de transporte"},{"p":"CVCT-0031","s":"515886","m":"LOS PINOS C 369","u":"PISO 1 · CONSULTA EXTERNA · SALA DE PROCEDIMIENTOS 2","t":"Camilla de transporte"},{"p":"CVCT-0032","s":"515900","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · PREPARACION","t":"Camilla de transporte"},{"p":"CVCT-0033","s":"515882","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0034","s":"515897","m":"LOS PINOS C 369","u":"SOTANO 2 · INGENIERIA BIOMEDICA · TALLER BIOMEDICO","t":"Camilla de transporte"},{"p":"CVCT-0035","s":"515881","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0036","s":"515884","m":"LOS PINOS C 369","u":"SOTANO 1 · SERVICIOS GENERALES Y APOYO · SALA DE TRANSICION","t":"Camilla de transporte"},{"p":"CVCT-0037","s":"515893","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0038","s":"515899","m":"LOS PINOS C 369","u":"PISO 1 · QUIMIOTERAPIA · PUESTO DE ENFERMERIA","t":"Camilla de transporte"},{"p":"CVCT-0039","s":"515883","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0040","s":"515877","m":"LOS PINOS C 369","u":"ÁREAS COMUNES","t":"Camilla de transporte"},{"p":"CVCT-0041","s":"515889","m":"LOS PINOS C 369","u":"PISO 2 · BODEGA BIOMÉDICA","t":"Camilla de transporte"},{"p":"CVCT-0042","s":"515875","m":"LOS PINOS C 369","u":"SOTANO 1 · BODEGA","t":"Camilla de transporte"},{"p":"CVCT-0043","s":"515892","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0045","s":"515879","m":"LOS PINOS C 369","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 102","t":"Camilla de transporte"},{"p":"CVCT-0046","s":"515898","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0047","s":"515890","m":"LOS PINOS C 369","u":"PISO 1 · HOSPITAL DIA","t":"Camilla de transporte"},{"p":"CVCT-0048","s":"515888","m":"LOS PINOS C 369","u":"NO ENCONTRADOS - PISO 6","t":"Camilla de transporte"},{"p":"CVCT-0049","s":"515901","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · PREPARACION","t":"Camilla de transporte"},{"p":"CVCT-0050","s":"515896","m":"LOS PINOS C 369","u":"PISO 2 · CIRUGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0051","s":"515878","m":"LOS PINOS C 369","u":"PISO 1 · IMAGENOLOGIA · RECUPERACION","t":"Camilla de transporte"},{"p":"CVCT-0052","s":"515887","m":"LOS PINOS C 369","u":"CLINICA VICTORIANA","t":"Camilla de transporte"},{"p":"CVCT-0053","s":"515894","m":"LOS PINOS C 369","u":"PISO 1 · SALA DE PREALTAS","t":"Camilla de transporte"},{"p":"CVCT-0054","s":"515873","m":"LOS PINOS C 369","u":"GENERAL","t":"Camilla de transporte"},{"p":"CVCT-0055","s":"704162","m":"LOS PINOS C 379","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 104","t":"Camilla ginecologica"},{"p":"CVCT-0056","s":"704166","m":"LOS PINOS C 379","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 105","t":"Camilla ginecologica"},{"p":"CVCT-0057","s":"704167","m":"LOS PINOS C 379","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 106","t":"Camilla ginecologica"},{"p":"CVCT-0058","s":"704164","m":"LOS PINOS C 379","u":"CLINICA VICTORIANA","t":"Camilla ginecologica"},{"p":"CVEB-1132","s":"703759","m":"LOS PINOS C 379","u":"MONITOREO · ÁREAS COMUNES","t":"Camilla ginecologica"},{"p":"CVEB-1237","s":"Y0011356010401","m":"MAFET M-104","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 103","t":"Camilla hospitalaria"},{"p":"CVEB-1238","s":"Y0011356010402","m":"MAFET M-104","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 102","t":"Camilla hospitalaria"},{"p":"SUMI-0003","s":"260820-0819","m":"DISPROMEDICS. CDI 10-01 55","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 101","t":"Camilla divan de un plano"},{"p":"SUMIMOB-0943","s":"NO APLICA","m":"DISPROMEDICS CGT 70-01","u":"PISO 1 · CONSULTA EXTERNA · CONSULTORIO 101","t":"Camilla ginecologica en tuberia"}]}];
+const INGENIEROS = ["Esteban","Roci","Silvana","Sharon","Julián","Alejandro","María Camila"];
+const PERIODO = "Septiembre 2026";
+const LS_TEC = "camas-mp-tecnico";
+const POLL_MS = 6000;
+
+const ITEMS = [];
+GRUPOS.forEach(g => g.items.forEach(it => ITEMS.push(Object.assign({g: g.id, gn: g.nombre, resp: g.resp}, it))));
+
+let state = {};
+let tab = GRUPOS[0].id;
+let filter = "all";
+let query = "";
+let open = null;
+let online = null;
+const timers = {};
+
+const blank = () => ({mp:false,fecha:"",mpi:"",tec:"",rep:"",obs:"",keeper:false,firma:false,upd:""});
+function st(p){ return Object.assign(blank(), state[p] || {}); }
+function fase(s){ if (s.firma) return "ok"; if (s.keeper) return "keeper"; if (s.mp) return "mp"; return "pendiente"; }
+const FASE_TXT = {pendiente:"Pendiente", mp:"Falta Keeper", keeper:"Falta firma", ok:"Cerrada"};
+function hoy(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+
+function setConn(kind){
+  online = kind;
+  const el = document.getElementById("connstat");
+  if (kind === "on") el.innerHTML = '<span class="dot on"></span>Guardado compartido activo';
+  else if (kind === "off") el.innerHTML = '<span class="dot off"></span>Sin conexión con el servidor';
+  else el.innerHTML = '<span class="dot wait"></span>Conectando…';
+}
+
+async function fetchState(){
+  try{
+    const r = await fetch("/api/state", {cache:"no-store"});
+    if (!r.ok){
+      if (r.status === 503) flash("La base de datos todavía no está conectada en Vercel. Conéctala en Storage y vuelve a cargar.");
+      setConn("off"); return;
+    }
+    const data = await r.json();
+    state = data || {};
+    setConn("on");
+    render();
+  }catch(e){ setConn("off"); }
+}
+
+async function push(placa, patch){
+  try{
+    const r = await fetch("/api/state", {
+      method: "POST", headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({placa, patch})
+    });
+    if (!r.ok){ setConn("off"); flash("No se pudo guardar el cambio. Intenta de nuevo en un momento."); return; }
+    setConn("on");
+  }catch(e){ setConn("off"); }
+}
+function queue(placa){
+  clearTimeout(timers[placa]);
+  timers[placa] = setTimeout(()=>push(placa, state[placa]), 500);
+}
+function flash(msg){ document.getElementById("banner").innerHTML = '<div class="banner">'+msg+'</div>'; }
+
+function mutate(placa, patch, now){
+  const s = st(placa);
+  Object.assign(s, patch);
+  s.upd = new Date().toISOString();
+  state[placa] = s;
+  render();
+  if (now) push(placa, s); else queue(placa);
+}
+function toggle(placa, etapa){
+  const s = st(placa);
+  const ing = document.getElementById("ingeniero").value;
+  if (etapa === "mp"){
+    if (s.mp) return mutate(placa,{mp:false,keeper:false,firma:false},true);
+    return mutate(placa,{mp:true, fecha: s.fecha || hoy(), tec: s.tec || ing},true);
+  }
+  if (etapa === "keeper"){
+    if (s.keeper) return mutate(placa,{keeper:false,firma:false},true);
+    return mutate(placa,{mp:true, keeper:true, fecha: s.fecha || hoy(), tec: s.tec || ing},true);
+  }
+  if (etapa === "firma"){
+    if (s.firma) return mutate(placa,{firma:false},true);
+    return mutate(placa,{mp:true, keeper:true, firma:true, fecha: s.fecha || hoy(), tec: s.tec || ing},true);
+  }
+}
+
+function visibles(){
+  const q = query.trim().toLowerCase();
+  return ITEMS.filter(it => {
+    if (it.g !== tab) return false;
+    if (q && !(it.p.toLowerCase().includes(q) || it.u.toLowerCase().includes(q) || it.m.toLowerCase().includes(q))) return false;
+    const f = fase(st(it.p));
+    if (filter === "all") return true;
+    if (filter === "pendiente") return f === "pendiente";
+    if (filter === "ok") return f === "ok";
+    if (filter === "proceso") return f === "mp" || f === "keeper";
+    return true;
+  });
+}
+function conteo(list){ const c = {total:list.length, pendiente:0, mp:0, keeper:0, ok:0}; list.forEach(it => c[fase(st(it.p))]++); return c; }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
+
+function renderTabs(){
+  const n = document.getElementById("tabs");
+  n.innerHTML = GRUPOS.map(g => {
+    const c = conteo(ITEMS.filter(i => i.g === g.id));
+    const pct = c.total ? Math.round(c.ok/c.total*100) : 0;
+    return '<button role="tab" aria-selected="'+(g.id===tab)+'" data-g="'+g.id+'">'+
+      '<span class="t">'+esc(g.nombre)+'</span><span class="r">'+esc(g.resp)+' · '+c.ok+'/'+c.total+'</span></button>';
+  }).join("");
+  n.querySelectorAll("button").forEach(b => b.onclick = () => { tab = b.dataset.g; open = null; render(); });
+}
+function renderSummary(){
+  const el = document.getElementById("summary");
+  const all = conteo(ITEMS);
+  const porResp = {};
+  GRUPOS.forEach(g => {
+    const c = conteo(ITEMS.filter(i => i.g === g.id));
+    porResp[g.resp] = porResp[g.resp] || {ok:0,total:0};
+    porResp[g.resp].ok += c.ok; porResp[g.resp].total += c.total;
+  });
+  let cells = '<div class="sum-cell"><span class="nm">Equipos del mes</span><span class="vl">'+all.total+' <span>camas y camillas</span></span></div>'+
+    '<div class="sum-cell"><span class="nm">Sin intervenir</span><span class="vl">'+all.pendiente+' <span>pendientes</span></span></div>'+
+    '<div class="sum-cell"><span class="nm">En proceso</span><span class="vl">'+(all.mp+all.keeper)+' <span>'+all.mp+' sin Keeper · '+all.keeper+' sin firma</span></span></div>'+
+    '<div class="sum-cell"><span class="nm">Cerradas</span><span class="vl">'+all.ok+' <span>con firma de la jefe</span></span></div>';
+  Object.keys(porResp).forEach(r => {
+    const v = porResp[r];
+    cells += '<div class="sum-cell"><span class="nm">'+esc(r)+'</span><span class="vl">'+v.ok+'/'+v.total+' <span>'+(v.total?Math.round(v.ok/v.total*100):0)+'%</span></span></div>';
+  });
+  el.innerHTML = cells;
+  const pct = all.total ? Math.round(all.ok/all.total*100) : 0;
+  document.getElementById("gnum").textContent = pct + "%";
+  document.getElementById("gbar").style.width = pct + "%";
+}
+function renderRows(){
+  const g = GRUPOS.find(x => x.id === tab);
+  const list = visibles();
+  const c = conteo(ITEMS.filter(i => i.g === tab));
+  document.getElementById("ghead").innerHTML =
+    '<h2>'+esc(g.nombre)+'</h2><span class="meta">Responsable: <strong>'+esc(g.resp)+'</strong></span>'+
+    '<span class="meta">'+c.ok+' cerradas · '+(c.mp+c.keeper)+' en proceso · '+c.pendiente+' pendientes de '+c.total+'</span>';
+  const cont = document.getElementById("rows");
+  if (!list.length){ cont.innerHTML = '<div class="empty">No hay equipos con ese filtro.</div>'; return; }
+  cont.innerHTML = list.map(it => {
+    const s = st(it.p), f = fase(s), abierto = open === it.p;
+    return '<article class="row'+(f==="ok"?" done":"")+'" data-p="'+esc(it.p)+'">'+
+      '<div class="rhead" data-act="open">'+
+        '<span class="placa">'+esc(it.p)+'</span>'+
+        '<span class="loc">'+esc(it.u)+'<span class="eq">'+esc(it.t)+' · '+esc(it.m)+' · Serie '+esc(it.s)+(s.mpi?' · MPI '+esc(s.mpi):'')+'</span></span>'+
+        '<span class="stages">'+
+          '<button class="st'+(s.mp?" on-mp":"")+'" data-act="mp" title="Mantenimiento ejecutado">MP</button>'+
+          '<button class="st'+(s.keeper?" on-keep":"")+'" data-act="keeper" title="Reporte cargado en Keeper">Keeper</button>'+
+          '<button class="st'+(s.firma?" on-ok":"")+'" data-act="firma" title="Firmado por la jefe del servicio">Firma</button>'+
+        '</span>'+
+        '<span class="pill '+f+'">'+FASE_TXT[f]+'</span>'+
+      '</div>'+ (abierto ? detalle(it, s) : '') + '</article>';
+  }).join("");
+}
+function detalle(it, s){
+  return '<div class="detail">'+
+    '<label>Fecha del mantenimiento<input type="date" data-f="fecha" value="'+esc(s.fecha)+'"></label>'+
+    '<label>MPI (consecutivo)<input type="text" data-f="mpi" inputmode="numeric" placeholder="Ej. 4821" value="'+esc(s.mpi)+'"></label>'+
+    '<label>Ingeniero que lo hizo<select data-f="tec"><option value="">Sin asignar</option>'+
+      INGENIEROS.map(n => '<option'+(n===s.tec?' selected':'')+'>'+esc(n)+'</option>').join("")+
+      (s.tec && INGENIEROS.indexOf(s.tec)<0 ? '<option selected>'+esc(s.tec)+'</option>' : '')+
+    '</select></label>'+
+    '<label>Repuesto usado<input type="text" data-f="rep" placeholder="Rueda, control, actuador…" value="'+esc(s.rep)+'"></label>'+
+    '<label class="wide">Observaciones y novedades<textarea data-f="obs" placeholder="Qué se encontró, qué quedó pendiente, si requiere correctivo">'+esc(s.obs)+'</textarea></label>'+
+    '<div class="dmeta"><span>'+(s.upd ? 'Último cambio: '+new Date(s.upd).toLocaleString("es-CO") : 'Sin registro todavía')+'</span>'+
+    '<button class="linkish" data-act="reset">Borrar registro de este equipo</button></div>'+
+  '</div>';
+}
+function render(){ renderTabs(); renderSummary(); renderRows(); }
+
+document.getElementById("rows").addEventListener("click", e => {
+  const row = e.target.closest(".row"); if (!row) return;
+  const placa = row.dataset.p;
+  const act = e.target.dataset.act;
+  if (act === "mp" || act === "keeper" || act === "firma"){ e.stopPropagation(); toggle(placa, act); return; }
+  if (act === "reset"){
+    delete state[placa]; render();
+    fetch("/api/state", {method:"DELETE", headers:{"Content-Type":"application/json"}, body: JSON.stringify({placa})}).catch(()=>{});
+    return;
+  }
+  if (e.target.closest(".detail")) return;
+  open = (open === placa) ? null : placa;
+  render();
+});
+function onField(e){
+  const f = e.target.dataset.f; if (!f) return;
+  const placa = e.target.closest(".row").dataset.p;
+  const s = st(placa); s[f] = e.target.value; s.upd = new Date().toISOString();
+  state[placa] = s; queue(placa);
+}
+document.getElementById("rows").addEventListener("input", onField);
+document.getElementById("rows").addEventListener("change", onField);
+document.getElementById("q").addEventListener("input", e => { query = e.target.value; renderRows(); });
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  filter = b.dataset.f;
+  document.querySelectorAll("#filters .chip").forEach(c => c.setAttribute("aria-pressed", c === b));
+  renderRows();
+});
+
+function csv(){
+  const head = ["Grupo","Responsable","Placa","Equipo","Marca y modelo","Serie","Ubicacion","Estado","Fecha","MPI","Ingeniero","Repuesto","Observaciones","Keeper","Firma jefe"];
+  const q = v => '"' + String(v==null?"":v).replace(/"/g,'""') + '"';
+  const lines = [head.map(q).join(",")];
+  ITEMS.forEach(it => {
+    const s = st(it.p);
+    lines.push([it.gn,it.resp,it.p,it.t,it.m,it.s,it.u,FASE_TXT[fase(s)],s.fecha,s.mpi,s.tec,s.rep,s.obs,s.keeper?"SI":"NO",s.firma?"SI":"NO"].map(q).join(","));
+  });
+  return "﻿" + lines.join("\r\n");
+}
+document.getElementById("csv").onclick = () => {
+  const blob = new Blob([csv()], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "mantenimiento-camas-" + hoy() + ".csv";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url), 2000);
+};
+
+document.getElementById("periodo").textContent = PERIODO;
+const selT = document.getElementById("ingeniero");
+selT.innerHTML = '<option value="">Sin definir</option>' + INGENIEROS.map(t => '<option>'+esc(t)+'</option>').join("");
+try { selT.value = localStorage.getItem(LS_TEC) || ""; } catch(e){}
+selT.onchange = () => { try{ localStorage.setItem(LS_TEC, selT.value); }catch(e){} };
+
+render();
+fetchState();
+setInterval(fetchState, POLL_MS);
+</script>
+</body>
+</html>
