@@ -63,12 +63,19 @@ riesgo es bajo.
 
 ### Frontend (`public/index.html`)
 
-Copia exacta de la versión verificada en producción en Vercel. No se le cambió nada en la
-migración, a propósito, para no introducir errores de transcripción.
+Partió como copia exacta de la versión verificada en producción en Vercel, sin tocar nada en
+la migración, para no introducir errores de transcripción. Después se aplicaron cambios
+puntuales pedidos por el usuario (ver más abajo).
 
 - Sin localStorage para el estado compartido. Únicamente recuerda qué ingeniero quedó
   seleccionado en el dropdown (`camas-mp-tecnico`), comodidad local, no dato compartido.
 - Polling a `GET /api/state` cada 6 segundos (`POLL_MS`) más una carga al iniciar.
+- El polling no pisa lo que el ingeniero está escribiendo. `fetchState()` conserva los
+  registros con escritura pendiente (los que tienen timer vivo en `timers`) y el registro
+  abierto mientras haya un campo con foco. La función `editing()` detecta ese foco, y en ese
+  caso solo refresca pestañas y resumen, sin redibujar la lista. Sin esto, el refresco cada
+  6 segundos borraba una fecha o un MPI a medio digitar.
+- La búsqueda cubre placa, ubicación, marca/modelo y número de serie.
 - Los cambios se mandan con `POST /api/state`, con debounce de 500 ms para campos de texto y
   de forma inmediata para los botones de etapa.
 - Indicador de conexión (`#connstat`): "Conectando…", "Guardado compartido activo" o

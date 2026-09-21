@@ -169,7 +169,7 @@ nav.tabs button[aria-selected="true"] .r{color:var(--accent)}
   <section class="summary" id="summary"></section>
   <nav class="tabs" id="tabs" role="tablist"></nav>
   <div class="toolbar">
-    <input class="search" id="q" type="search" placeholder="Buscar placa, habitación o servicio" autocomplete="off">
+    <input class="search" id="q" type="search" placeholder="Buscar placa, serie, habitación o servicio" autocomplete="off">
     <div class="chips" id="filters">
       <button class="chip" data-f="all" aria-pressed="true">Todas</button>
       <button class="chip" data-f="pendiente" aria-pressed="false">Pendientes</button>
@@ -280,7 +280,7 @@ function visibles(){
   const q = query.trim().toLowerCase();
   return ITEMS.filter(it => {
     if (it.g !== tab) return false;
-    if (q && !(it.p.toLowerCase().includes(q) || it.u.toLowerCase().includes(q) || it.m.toLowerCase().includes(q))) return false;
+    if (q && !(it.p.toLowerCase().includes(q) || it.u.toLowerCase().includes(q) || it.m.toLowerCase().includes(q) || String(it.s||"").toLowerCase().includes(q))) return false;
     const f = fase(st(it.p));
     if (filter === "all") return true;
     if (filter === "pendiente") return f === "pendiente";
