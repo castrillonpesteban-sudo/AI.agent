@@ -220,10 +220,14 @@ async function fetchState(){
       if (r.status === 503) flash("La base de datos todavía no está conectada en Vercel. Conéctala en Storage y vuelve a cargar.");
       setConn("off"); return;
     }
-    const data = await r.json();
-    state = data || {};
+    const data = await r.json() || {};
+    // Conserva los cambios locales que aun no se han guardado en el servidor
+    Object.keys(timers).forEach(pl => { if (timers[pl] && state[pl]) data[pl] = state[pl]; });
+    if (editing() && open && state[open]) data[open] = state[open];
+    state = data;
     setConn("on");
-    render();
+    // Si el usuario esta escribiendo o eligiendo fecha, no redibuja la lista
+    if (editing()){ renderTabs(); renderSummary(); } else render();
   }catch(e){ setConn("off"); }
 }
 
@@ -239,7 +243,11 @@ async function push(placa, patch){
 }
 function queue(placa){
   clearTimeout(timers[placa]);
-  timers[placa] = setTimeout(()=>push(placa, state[placa]), 500);
+  timers[placa] = setTimeout(()=>{ delete timers[placa]; push(placa, state[placa]); }, 500);
+}
+function editing(){
+  const a = document.activeElement;
+  return !!(a && a.closest && a.closest("#rows .detail") && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName));
 }
 function flash(msg){ document.getElementById("banner").innerHTML = '<div class="banner">'+msg+'</div>'; }
 
