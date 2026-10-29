@@ -27,6 +27,10 @@ Tus responsabilidades principales son:
       parts: [{ text: m.content || "" }],
     }));
 
+    while (history.length > 0 && history[0].role !== "user") {
+      history.shift();
+    }
+
     const lastMessage = messages[messages.length - 1]?.content || "";
 
     const chat = model.startChat({ history });
