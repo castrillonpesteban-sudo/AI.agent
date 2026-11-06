@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nota Final Necesaria</title>
+<style>
+  :root {
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --text: #1d2733;
+    --muted: #5b6878;
+    --line: #d9dfe6;
+    --accent: #1565c0;
+    --ok: #1b7f3b;
+    --warn: #b26a00;
+    --bad: #c62828;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12161b;
+      --card: #1c232b;
+      --text: #e8edf2;
+      --muted: #9aa7b5;
+      --line: #2e3843;
+      --accent: #64a8ff;
+      --ok: #4cc27a;
+      --warn: #f0a83a;
+      --bad: #ff6b6b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+  main {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+  }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  p.sub { margin: 0 0 20px; color: var(--muted); font-size: 0.95rem; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  h2 { font-size: 1.05rem; margin: 0 0 12px; }
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .row:last-child { margin-bottom: 0; }
+  label { font-weight: 500; }
+  input {
+    width: 110px;
+    font-size: 1.1rem;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    text-align: center;
+  }
+  input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .resultado { text-align: center; }
+  .grande {
+    font-size: 3.2rem;
+    font-weight: 700;
+    margin: 4px 0;
+    color: var(--accent);
+  }
+  .msg { font-weight: 600; margin: 4px 0 12px; }
+  .ok { color: var(--ok); }
+  .warn { color: var(--warn); }
+  .bad { color: var(--bad); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+  tr:last-child td { border-bottom: none; font-weight: 600; }
+  .error { color: var(--bad); font-size: 0.9rem; min-height: 1.2em; margin-top: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>¿Qué nota necesito en el final?</h1>
+  <p class="sub">Escala de 0 a 5. Parciales 60%, final 40%.</p>
+
+  <section class="card">
+    <h2>Notas de parciales (20% cada uno)</h2>
+    <div class="row"><label for="p1">Parcial 1</label><input id="p1" type="number" inputmode="decimal" min="0" max="5" step="0.1" value="4.0"></div>
+    <div class="row"><label for="p2">Parcial 2</label><input id="p2" type="number" inputmode="decimal" min="0" max="5" step="0.1" value="3.0"></div>
+    <div class="row"><label for="p3">Parcial 3</label><input id="p3" type="number" inputmode="decimal" min="0" max="5" step="0.1" value="2.0"></div>
+  </section>
+
+  <section class="card">
+    <h2>Meta</h2>
+    <div class="row"><label for="meta">Nota para aprobar</label><input id="meta" type="number" inputmode="decimal" min="0" max="5" step="0.1" value="3.0"></div>
+    <div class="error" id="error"></div>
+  </section>
+
+  <section class="card resultado">
+    <h2>Necesitas en el final</h2>
+    <div class="grande" id="necesaria">3.0</div>
+    <div class="msg" id="mensaje"></div>
+    <table>
+      <tr><td>Promedio parciales</td><td id="prom">3.00</td></tr>
+      <tr><td>Aporte parciales (60%)</td><td id="aporteP">1.80</td></tr>
+      <tr><td>Aporte final requerido (40%)</td><td id="aporteF">1.20</td></tr>
+      <tr><td>Nota definitiva</td><td id="def">3.00</td></tr>
+    </table>
+  </section>
+</main>
+
+<script>
+  const PESO_PARCIALES = 0.6;
+  const PESO_FINAL = 0.4;
+  const ids = ["p1", "p2", "p3", "meta"];
+  const $ = (id) => document.getElementById(id);
+
+  function leer(id) {
+    const v = parseFloat(String($(id).value).replace(",", "."));
+    return v;
+  }
+
+  function calcular() {
+    const vals = ids.map(leer);
+    if (vals.some((v) => isNaN(v) || v < 0 || v > 5)) {
+      $("error").textContent = "Ingresa notas entre 0 y 5.";
+      return;
+    }
+    $("error").textContent = "";
+
+    const [p1, p2, p3, meta] = vals;
+    const promedio = (p1 + p2 + p3) / 3;
+    const aporteP = promedio * PESO_PARCIALES;
+    const necesaria = (meta - aporteP) / PESO_FINAL;
+
+    const msg = $("mensaje");
+    const grande = $("necesaria");
+    let notaFinal;
+
+    if (necesaria <= 0) {
+      notaFinal = 0;
+      grande.textContent = "0.0";
+      msg.textContent = "Ya aprobaste con los parciales.";
+      msg.className = "msg ok";
+    } else if (necesaria > 5) {
+      notaFinal = 5;
+      grande.textContent = necesaria.toFixed(2);
+      msg.textContent = "No alcanzas la meta. Con 5.0 llegas a " + (aporteP + 5 * PESO_FINAL).toFixed(2) + ".";
+      msg.className = "msg bad";
+    } else {
+      notaFinal = necesaria;
+      grande.textContent = necesaria.toFixed(2);
+      msg.textContent = necesaria >= 4 ? "Exigente, pero posible." : "Meta alcanzable.";
+      msg.className = necesaria >= 4 ? "msg warn" : "msg ok";
+    }
+
+    $("prom").textContent = promedio.toFixed(2);
+    $("aporteP").textContent = aporteP.toFixed(2);
+    $("aporteF").textContent = (notaFinal * PESO_FINAL).toFixed(2);
+    $("def").textContent = (aporteP + notaFinal * PESO_FINAL).toFixed(2);
+  }
+
+  ids.forEach((id) => $(id).addEventListener("input", calcular));
+  calcular();
+</script>
+</body>
+</html>
